@@ -4,7 +4,7 @@ import org.usfirst.frc.team2503.joystick.interfaces.ForwardBackJoystick;
 import org.usfirst.frc.team2503.joystick.SaitekAV8RJoystick;
 import org.usfirst.frc.team2503.robot.driveBase.DriveBaseDriveBase;
 
-public class DriveBaseDriveBaseDriver extends DriveBaseDriveBase implements Driver {
+public class DriveBaseForwardBackSaitekAV8RDriveBaseDriver extends DriveBaseDriveBase implements Driver {
 	private ForwardBackJoystick leftJoystick;
 	private SaitekAV8RJoystick rightJoystick;
 
@@ -46,7 +46,7 @@ public class DriveBaseDriveBaseDriver extends DriveBaseDriveBase implements Driv
 
 	}
 	
-	public DriveBaseDriveBaseDriver(ForwardBackJoystick left, SaitekAV8RJoystick right) {
+	public DriveBaseForwardBackSaitekAV8RDriveBaseDriver(ForwardBackJoystick left, SaitekAV8RJoystick right) {
 		leftJoystick = left;
 		rightJoystick = right;
 	}
