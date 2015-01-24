@@ -16,24 +16,24 @@ public class Robot extends IterativeRobot {
     
     public void disabledInit() {
     }
+    
+    public void disabledPeriodic() {
+    }
 
     public void autonomousInit() {
     }
 
+    public void autonomousPeriodic() {
+    }
+    
     public void teleopInit() {
     }
     
-    public void testInit() {
-    }
-
-    public void disabledPeriodic() {
-    }
-
-    public void autonomousPeriodic() {
-    }
-
     public void teleopPeriodic() {
     	driveBaseDriver.drive();
+    }
+    
+    public void testInit() {
     }
     
     public void testPeriodic() {
@@ -42,7 +42,5 @@ public class Robot extends IterativeRobot {
     public Robot() {
     	driveBaseDriver = new DriveBaseDriveBaseDriver(new LogitechAttack3Joystick(WarriorJoystickSide.LEFT_PRIMARY), new SaitekAV8RJoystick(WarriorJoystickSide.RIGHT_PRIMARY));
     	driverStation = DriverStation.getInstance();
-
-    	System.out.println("Robot constructor done.");
     }
 }
