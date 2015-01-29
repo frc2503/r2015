@@ -1,9 +1,9 @@
 package org.usfirst.frc.team2503.joystick;
 
-import org.usfirst.frc.team2503.joystick.interfaces.LeftRightForwardBackStickTriggerJoystick;
-import org.usfirst.frc.team2503.joystick.interfaces.ScrollJoystick;
+import org.usfirst.frc.team2503.joystick.interfaces.LeftRightForwardBackAxisStickTriggerButtonJoystick;
+import org.usfirst.frc.team2503.joystick.interfaces.ScrollAxisJoystick;
 
-public class LogitechAttack3Joystick extends WarriorJoystick implements LeftRightForwardBackStickTriggerJoystick, ScrollJoystick {
+public class LogitechAttack3Joystick extends WarriorJoystick implements LeftRightForwardBackAxisStickTriggerButtonJoystick, ScrollAxisJoystick {
 	public boolean getStickTriggerButton() { return getRawButton(1); }
 	public boolean getStickBackButton() { return getRawButton(2); }
 	public boolean getStickFrontButton() { return getRawButton(3); }

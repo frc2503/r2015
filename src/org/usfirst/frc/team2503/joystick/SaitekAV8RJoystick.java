@@ -1,8 +1,8 @@
 package org.usfirst.frc.team2503.joystick;
 
-import org.usfirst.frc.team2503.joystick.interfaces.LeftRightForwardBackRotateLeftRightDoubleThrottleStickTriggerJoystick;
+import org.usfirst.frc.team2503.joystick.interfaces.LeftRightForwardBackRotateDoubleThrottleAxisStickTriggerButtonJoystick;
 
-public class SaitekAV8RJoystick extends WarriorJoystick implements LeftRightForwardBackRotateLeftRightDoubleThrottleStickTriggerJoystick {
+public class SaitekAV8RJoystick extends WarriorJoystick implements LeftRightForwardBackRotateDoubleThrottleAxisStickTriggerButtonJoystick {
 	public enum SaitekAV8RJoystickBaseMode {
 		MODE_OFF(0), MODE_A(1), MODE_B(2);
 		

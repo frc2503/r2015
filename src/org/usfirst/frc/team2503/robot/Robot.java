@@ -2,13 +2,13 @@ package org.usfirst.frc.team2503.robot;
 
 import edu.wpi.first.wpilibj.*;
 
-import org.usfirst.frc.team2503.robot.driver.DriveBaseForwardBackSaitekAV8RDriveBaseDriver;
-import org.usfirst.frc.team2503.joystick.LogitechAttack3Joystick;
-import org.usfirst.frc.team2503.joystick.SaitekAV8RJoystick;
+import org.usfirst.frc.team2503.robot.driver.DriveBaseGamepadF310ControllerDriveBaseDriver;
+import org.usfirst.frc.team2503.joystick.GamepadF310Controller;
 import org.usfirst.frc.team2503.joystick.WarriorJoystick.WarriorJoystickSide;
 
 public class Robot extends IterativeRobot {
-	public DriveBaseForwardBackSaitekAV8RDriveBaseDriver driveBaseDriver;
+	//public DriveBaseForwardBackSaitekAV8RDriveBaseDriver standardDriveBaseDriver;
+	public DriveBaseGamepadF310ControllerDriveBaseDriver gamepadDriveBaseDriver;
 	public DriverStation driverStation;
 	
     public void robotInit() {
@@ -30,7 +30,8 @@ public class Robot extends IterativeRobot {
     }
     
     public void teleopPeriodic() {
-    	driveBaseDriver.drive();
+    	//standardDriveBaseDriver.drive();
+    	gamepadDriveBaseDriver.drive();
     }
     
     public void testInit() {
@@ -40,7 +41,8 @@ public class Robot extends IterativeRobot {
     }
     
     public Robot() {
-    	driveBaseDriver = new DriveBaseForwardBackSaitekAV8RDriveBaseDriver(new LogitechAttack3Joystick(WarriorJoystickSide.LEFT_PRIMARY), new SaitekAV8RJoystick(WarriorJoystickSide.RIGHT_PRIMARY));
+    	//standardDriveBaseDriver = new DriveBaseForwardBackSaitekAV8RDriveBaseDriver(new LogitechAttack3Joystick(WarriorJoystickSide.LEFT_PRIMARY), new SaitekAV8RJoystick(WarriorJoystickSide.RIGHT_PRIMARY));
+    	gamepadDriveBaseDriver = new DriveBaseGamepadF310ControllerDriveBaseDriver(new GamepadF310Controller(WarriorJoystickSide.LEFT_PRIMARY));
     	driverStation = DriverStation.getInstance();
     }
 }

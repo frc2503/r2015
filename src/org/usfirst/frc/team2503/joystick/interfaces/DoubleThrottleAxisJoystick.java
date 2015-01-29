@@ -1,6 +1,6 @@
 package org.usfirst.frc.team2503.joystick.interfaces;
 
-public interface LeftRightDoubleThrottleJoystick {
+public interface DoubleThrottleAxisJoystick {
 	public double getLeftThrottleUpDownAxisValue();
 	public double getLeftThrottleDownUpAxisValue();
 	
