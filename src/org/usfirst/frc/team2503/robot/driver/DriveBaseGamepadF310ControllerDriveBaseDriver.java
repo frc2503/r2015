@@ -8,31 +8,15 @@ public class DriveBaseGamepadF310ControllerDriveBaseDriver extends DriveBaseDriv
 	
 	public void drive()
 	{
-		int pov = controller.getPov();
-		
+		int pov = controller.getPOV();
+
 		if(pov >= 0) {
-			if(pov == 0) {
-				drive(1.0 * 0.5, 1.0 * 0.5, 0.0 * 0.5);
-			} else if(pov == 45) {
-				drive(0.5 * 0.5, 0.5 * 0.5, 0.5 * 0.5);
-			} else if(pov == 90) {
-				drive(0.0 * 0.5, 0.0 * 0.5, 1.0 * 0.5);
-			} else if(pov == 135) {
-				drive(-0.5 * 0.5, -0.5 * 0.5, 0.5 * 0.5);
-			} else if(pov == 180) {
-				drive(-1.0 * 0.5, -1.0 * 0.5, 0.0 * 0.5);
-			} else if(pov == 225) {
-				drive(-0.5 * 0.5, -0.5 * 0.5, -0.5 * 0.5);
-			} else if(pov == 270) {
-				drive(0.0 * 0.5, 0.0 * 0.5, -1.0 * 0.5);
-			} else if(pov == 315) {
-				drive(0.5 * 0.5, 0.5 * 0.5, -0.5 * 0.5);
-			} else {
-				drive(0.0, 0.0, 0.0);
-			}
+			winch(-((double)(pov - 90) / 90.0));
 		} else {
-			drive(controller.getLeftBackForwardAxisValue(), controller.getRightBackForwardAxisValue(), (controller.getLeftLeftRightAxisValue() + controller.getRightLeftRightAxisValue()) / 2.0);
+			winch(0.0);
 		}
+		
+		drive(controller.getLeftBackForwardAxisValue(), controller.getRightForwardBackAxisValue(), controller.getRightLeftRightAxisValue());
 	}
 	
 	public DriveBaseGamepadF310ControllerDriveBaseDriver(GamepadF310Controller controller) {

@@ -1,6 +1,5 @@
 package org.usfirst.frc.team2503.robot.driver;
 
-import org.usfirst.frc.team2503.Constants;
 import org.usfirst.frc.team2503.joystick.MadCatzV1Joystick;
 import org.usfirst.frc.team2503.robot.driveBase.DriveBaseDriveBase;
 
@@ -8,20 +7,33 @@ public class DriveBaseMadCatzV1MadCatzV1DriveBaseDriver extends DriveBaseDriveBa
 	private MadCatzV1Joystick leftJoystick;
 	private MadCatzV1Joystick rightJoystick;
 	
-	double multiplier;
+	private double multiplier;
 	
 	public void drive() {
-		multiplier = (leftJoystick.getThrottleUpDownAxisValue() + rightJoystick.getThrottleUpDownAxisValue()) / 2.0;
-		
-		boolean leftTrigger = leftJoystick.getStickTriggerButton();
-		boolean rightTrigger = rightJoystick.getStickTriggerButton();
-		
-		if(leftTrigger ^ rightTrigger) {
-			drive(multiplier * (leftJoystick.getLeftRightAxisValue() + rightJoystick.getLeftRightAxisValue()) / 2.0);
-		} else if(leftTrigger && rightTrigger) {
-			drive(multiplier * (leftJoystick.getBackForwardAxisValue()) * Constants.drivePrecisionMultiplier, multiplier * (rightJoystick.getBackForwardAxisValue()));
+		if(leftJoystick.getGripButton() || rightJoystick.getGripButton()) {
+			multiplier = 0.4;
 		} else {
-			drive(multiplier * (leftJoystick.getBackForwardAxisValue()), multiplier * (rightJoystick.getBackForwardAxisValue()));
+			multiplier = 1.0;
+		}
+		
+		if(leftJoystick.getStickTriggerButton()) {
+			drive(multiplier * leftJoystick.getLeftRightAxisValue());
+		} else {
+			drive(multiplier * leftJoystick.getBackForwardAxisValue(), multiplier * rightJoystick.getForwardBackAxisValue());
+		}
+		
+		if(rightJoystick.getStickTriggerButton()) {
+			winch(1.0);
+		} else if(rightJoystick.get2Button()) {
+			winch(-1.0);
+		} else {
+			winch(0.0);
+		}
+		
+		if(leftJoystick.get2Button()) {
+			lights(true);
+		} else {
+			lights(false);
 		}
 	}
 	
