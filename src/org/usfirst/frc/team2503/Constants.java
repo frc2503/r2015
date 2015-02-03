@@ -9,6 +9,8 @@ public class Constants {
 	
 	public static final double drivePrecisionMultiplier = 0.3;
 	
+	public static final double masterPowerMultiplier = 1.0;
+	
 	public static final String piUrl = "http://10.25.3.17:5800/data";
 	public static final String piWebUrl = "http://10.25.3.17:5800/web";
 	public static final String piClientVersion = "0.0.0";
