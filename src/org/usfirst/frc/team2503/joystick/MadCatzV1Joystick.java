@@ -9,6 +9,7 @@ public class MadCatzV1Joystick extends WarriorJoystick implements LeftRightForwa
 	public boolean get4Button() { return getRawButton(4); }
 	public boolean get5Button() { return getRawButton(5); }
 	public boolean get6Button() { return getRawButton(6); }
+	public boolean getGripButton() { return getRawButton(7); }
 	
 	public int getPov() { return getPOV(0); }
 	
