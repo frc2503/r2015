@@ -16,7 +16,7 @@ public class DriveBaseGamepadF310ControllerDriveBaseDriver extends DriveBaseDriv
 			winch(0.0);
 		}
 		
-		drive(controller.getLeftBackForwardAxisValue(), controller.getRightForwardBackAxisValue(), controller.getRightLeftRightAxisValue());
+		drive(controller.getLeftBackForwardAxisValue(), controller.getRightForwardBackAxisValue());
 	}
 	
 	public DriveBaseGamepadF310ControllerDriveBaseDriver(GamepadF310Controller controller) {

@@ -2,7 +2,9 @@ package org.usfirst.frc.team2503.robot.driver;
 
 import org.usfirst.frc.team2503.Constants;
 import org.usfirst.frc.team2503.joystick.MadCatzV1Joystick;
+import org.usfirst.frc.team2503.robot.driveBase.ClampStatus;
 import org.usfirst.frc.team2503.robot.driveBase.DriveBaseDriveBase;
+import org.usfirst.frc.team2503.robot.lights.LightsController;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Relay;
@@ -12,9 +14,10 @@ import edu.wpi.first.wpilibj.Timer;
 public class DriveBaseMadCatzV1MadCatzV1DriveBaseDriver extends DriveBaseDriveBase implements Driver {
 	private MadCatzV1Joystick leftJoystick;
 	private MadCatzV1Joystick rightJoystick;
-	private LightsController lightsController;
+	private UpperLightsController upperLightsController;
+	private LowerLightsController lowerLightsController;
 
-	private class LightsController implements Runnable {
+	private class UpperLightsController implements LightsController {
 		private boolean isRunning = true;
 		private Value currentValue;
 		private double currentSetEnd;
@@ -50,7 +53,7 @@ public class DriveBaseMadCatzV1MadCatzV1DriveBaseDriver extends DriveBaseDriveBa
 
 		private void setLights(Value value) {
 			currentValue = value;
-			lights.set(currentValue);
+			upperLights.set(currentValue);
 		}
 		
 		private void toggleLights() {
@@ -104,15 +107,108 @@ public class DriveBaseMadCatzV1MadCatzV1DriveBaseDriver extends DriveBaseDriveBa
 					} else {
 						if(indicateWinching) {
 							toggle(currentValue, Timer.getFPGATimestamp(), currentSetEnd, 0.25, 0.1);
-						} else if(indicateSlipping && !indicateDriving) {
-							toggle(currentValue, Timer.getFPGATimestamp(), currentSetEnd, 0.25, 0.25);
-						} else if(indicateDriving && !indicateSlipping) {
-							toggle(currentValue, Timer.getFPGATimestamp(), currentSetEnd, 1.0, 0.25);
-						} else if(indicateDriving && indicateSlipping) {
-							toggle(currentValue, Timer.getFPGATimestamp(), currentSetEnd, 1.0, 0.25);
+						} else if(indicateDriving) {
+							toggle(currentValue, Timer.getFPGATimestamp(), currentSetEnd, 0.5, 0.25);
 						} else {
 							toggle(currentValue, Timer.getFPGATimestamp(), currentSetEnd, 2.0, 2.0);
 						}
+					}
+				}
+				
+				/* Microsleep to prevent race issues. */
+				Timer.delay(0.005);
+			}
+			
+			/**
+			 * When shutting down, do any necessary stuff.
+			 */
+			onStop();
+		}
+	}
+	
+	private class LowerLightsController implements LightsController {
+		private boolean isRunning = true;
+		private Value currentValue;
+		private double currentSetEnd;
+		private DriverStation driverStation = DriverStation.getInstance();
+		
+		public void onStart() {
+			System.out.println("[LightsController] Starting!");
+		}
+		
+		public void onStop() {
+			System.out.println("[LightsController] Stopping!");
+		}
+		
+		public void stop() {
+			if(isRunning) {
+				isRunning = false;
+			} else {
+				System.err.println("Tried to stop, but isRunning is non-truthy!");
+			}
+		}
+		
+		public void toggle(Value value, double currentTime, double lastTime, double onThreshold, double offThreshold) {
+			if(value == Relay.Value.kOn) {
+				if(currentTime - lastTime >= onThreshold) {
+					toggle();
+				}
+			} else if(value == Relay.Value.kOff) {
+				if(currentTime - lastTime >= offThreshold) {
+					toggle();
+				}
+			}
+		}
+
+		private void setLights(Value value) {
+			currentValue = value;
+			lowerLights.set(currentValue);
+		}
+		
+		private void toggleLights() {
+			if(currentValue == Relay.Value.kOn) {
+				setLights(Relay.Value.kOff);
+			} else {
+				setLights(Relay.Value.kOn);
+			}
+		}
+		
+		private void set(Value value) {
+			setLights(value);
+			
+			currentSetEnd = Timer.getFPGATimestamp();
+		}
+		
+		private void toggle() {
+			toggleLights();
+			
+			currentSetEnd = Timer.getFPGATimestamp();
+		}
+		
+		public void run() {
+			/**
+			 * When starting LightsController, run `onStart' to do any
+			 * necessary setup tasks.
+			 */
+			onStart();
+			
+			/**
+			 * This loop is called continuously until killed.
+			 */
+			while(isRunning) {
+				if(driverStation.isDisabled() || driverStation.isBrownedOut()) {
+					set(Relay.Value.kOff);
+				} else if(driverStation.isAutonomous()) {
+					set(Relay.Value.kOn);
+				} else if(driverStation.isTest()) {
+					set(Relay.Value.kOn);
+				} else if(driverStation.isOperatorControl()) {
+					if(leftJoystick.get2Button()) {
+						if(Constants.epilepsyMode) {
+							toggle(currentValue, Timer.getFPGATimestamp(), currentSetEnd, 0.02, 0.02);
+						}
+					} else {
+						set(Relay.Value.kOn);
 					}
 				}
 				
@@ -136,24 +232,32 @@ public class DriveBaseMadCatzV1MadCatzV1DriveBaseDriver extends DriveBaseDriveBa
 			multiplier = 1.0;
 		}
 		
-		if(leftJoystick.getStickTriggerButton()) {
-			drive(multiplier * leftJoystick.getBackForwardAxisValue(), multiplier * rightJoystick.getForwardBackAxisValue(), multiplier * leftJoystick.getLeftRightAxisValue());
-		} else {
-			drive(multiplier * leftJoystick.getBackForwardAxisValue(), multiplier * rightJoystick.getForwardBackAxisValue());
-		}
+		drive(multiplier * leftJoystick.getBackForwardAxisValue(), multiplier * rightJoystick.getForwardBackAxisValue());
 		
 		int pov = rightJoystick.getPov();
 		
 		if((pov > 270 && pov <= 360) || (pov >= 0 && pov < 90)) {
 			if(winchUpperLimitSwitch.get()) {
-				winch(1.0);
+				winch(1.0 * Math.abs((1.0 + rightJoystick.getThrottleUpDownAxisValue()) / 2.0));
+			} else {
+				System.out.println("Upper LS Active.");
+				winch(0.0);
 			}
 		} else if((pov > 90 && pov < 270)) {
 			if(winchLowerLimitSwitch.get()) {
-				winch(-1.0);
+				winch(-1.0 * Math.abs((1.0 + rightJoystick.getThrottleUpDownAxisValue()) / 2.0));
+			} else {
+				System.out.println("Lower LS Active.");
+				winch(0.0);
 			}
 		} else {
 			winch(0.0);
+		}
+		
+		if(leftJoystick.get4Button() || rightJoystick.get3Button()) {
+			clamp.set(ClampStatus.CLOSE);
+		} else if(leftJoystick.get3Button() || rightJoystick.get4Button()) {
+			clamp.set(ClampStatus.OPEN);
 		}
 	}
 	
@@ -161,7 +265,13 @@ public class DriveBaseMadCatzV1MadCatzV1DriveBaseDriver extends DriveBaseDriveBa
 		leftJoystick = left;
 		rightJoystick = right;
 		
-		lightsController = new LightsController();
-		new Thread(lightsController).start();
+		upperLightsController = new UpperLightsController();
+		new Thread(upperLightsController).start();
+		
+		lowerLightsController = new LowerLightsController();
+		new Thread(lowerLightsController).start();
+		
+		compressor.setClosedLoopControl(true);	
+		compressor.start();
 	}
 }

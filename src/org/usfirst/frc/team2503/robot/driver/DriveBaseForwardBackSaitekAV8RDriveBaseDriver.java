@@ -9,40 +9,7 @@ public class DriveBaseForwardBackSaitekAV8RDriveBaseDriver extends DriveBaseDriv
 	private SaitekAV8RJoystick rightJoystick;
 
 	public void drive() {
-		switch(rightJoystick.getBaseModeSwitch()) {
-
-		/**
-		 * If in Mode A (mode switch set to 'A' setting),
-		 * only slip.
-		 */
-		case MODE_A:
-			drive(rightJoystick.getLeftRightAxisValue());
-			break;
-			
-		/**
-		 * If in Mode B (mode switch set to 'B' setting),
-		 * slip and use joystick values.
-		 */
-		case MODE_B:
-			drive(leftJoystick.getBackForwardAxisValue(),
-			      rightJoystick.getBackForwardAxisValue(),
-			      rightJoystick.getLeftRightAxisValue());
-			break;
-			
-		/**
-		 * If in Mode OFF (mode switch set to 'OFF' setting),
-		 * or unrecognized return value from
-		 *
-		 * @method rightJoystick.getBaseModeSwitch()
-		 * 
-		 * just use joysticks for safety.
-		 */
-		default:
-		case MODE_OFF:
-			drive(leftJoystick.getBackForwardAxisValue(),
-			      rightJoystick.getBackForwardAxisValue());
-			break;
-		}
+		drive(leftJoystick.getBackForwardAxisValue(), rightJoystick.getBackForwardAxisValue());
 	}
 	
 	public DriveBaseForwardBackSaitekAV8RDriveBaseDriver(ForwardBackAxisJoystick left, SaitekAV8RJoystick right) {

@@ -2,7 +2,6 @@ package org.usfirst.frc.team2503.robot;
 
 import edu.wpi.first.wpilibj.*;
 
-import org.usfirst.frc.team2503.network.HttpNetworkClient;
 import org.usfirst.frc.team2503.robot.driver.DriveBaseMadCatzV1MadCatzV1DriveBaseDriver;
 import org.usfirst.frc.team2503.joystick.MadCatzV1Joystick;
 import org.usfirst.frc.team2503.joystick.WarriorJoystick.WarriorJoystickSide;
@@ -47,6 +46,6 @@ public class Robot extends IterativeRobot {
     	madCatzDriveBaseDriver = new DriveBaseMadCatzV1MadCatzV1DriveBaseDriver(new MadCatzV1Joystick(WarriorJoystickSide.LEFT_PRIMARY), new MadCatzV1Joystick(WarriorJoystickSide.RIGHT_PRIMARY));
     	driverStation = DriverStation.getInstance();
     	
-    	(new Thread(new HttpNetworkClient())).start();
+    	//(new Thread(new HttpNetworkClient())).start();
     }
 }
