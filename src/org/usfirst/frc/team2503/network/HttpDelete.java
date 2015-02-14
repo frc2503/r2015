@@ -8,18 +8,17 @@ import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
-import java.net.SocketException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Set;
 
-public class HttpGet {
+public class HttpDelete {
 	public URL url;
 	public HashMap<String, String> headers;
 	
 	public HttpURLConnection connection;
 	
-	public StringBuffer fire() throws ConnectException, SocketException {
+	public StringBuffer fire() throws ConnectException {
 		Set<String> headerKeys = null;
 		if(headers != null) {
 			headerKeys = headers.keySet();
@@ -27,7 +26,7 @@ public class HttpGet {
 
 		try {
 			connection = (HttpURLConnection)url.openConnection();
-			connection.setRequestMethod("GET");
+			connection.setRequestMethod("DELETE");
 			
 			if(headerKeys != null) {
 				for(int i = 0; i < headerKeys.size(); i += 1) {
@@ -65,7 +64,7 @@ public class HttpGet {
 		}
 	}
 	
-	public HttpGet(URL url, HashMap<String, String> headers) {
+	public HttpDelete(URL url, HashMap<String, String> headers) {
 		this.url = url;
 		this.headers = headers;
 	}

@@ -22,16 +22,21 @@ public class HttpPost {
 	public HttpURLConnection connection;
 	
 	public StringBuffer fire() throws ConnectException {
-		Set<String> headerKeys = headers.keySet();
+		Set<String> headerKeys = null;
+		if(headers != null) {
+			headerKeys = headers.keySet();
+		}
 		
 		try {
 			connection = (HttpURLConnection)this.url.openConnection();
 			connection.setRequestMethod("POST");
 			
-			for(int i = 0; i < headerKeys.size(); i += 1) {
-				String headerKey = (String)headerKeys.toArray()[i];
-				
-				connection.setRequestProperty(headerKey, headers.get(headerKey));
+			if(headerKeys != null) {
+				for(int i = 0; i < headerKeys.size(); i += 1) {
+					String headerKey = (String)headerKeys.toArray()[i];
+					
+					connection.setRequestProperty(headerKey, headers.get(headerKey));
+				}
 			}
 
 			connection.setUseCaches(false);

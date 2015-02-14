@@ -5,6 +5,8 @@ import org.usfirst.frc.team2503.joystick.MadCatzV1Joystick;
 import org.usfirst.frc.team2503.robot.driveBase.ClampStatus;
 import org.usfirst.frc.team2503.robot.driveBase.DriveBaseDriveBase;
 import org.usfirst.frc.team2503.robot.lights.LightsController;
+import org.usfirst.frc.team2503.robot.lights.UnderGlowLightsController;
+import org.usfirst.frc.team2503.robot.lights.UpperLightsController;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Relay;
@@ -15,249 +17,85 @@ public class DriveBaseMadCatzV1MadCatzV1DriveBaseDriver extends DriveBaseDriveBa
 	private MadCatzV1Joystick leftJoystick;
 	private MadCatzV1Joystick rightJoystick;
 	private UpperLightsController upperLightsController;
-	private LowerLightsController lowerLightsController;
-
-	private class UpperLightsController implements LightsController {
-		private boolean isRunning = true;
-		private Value currentValue;
-		private double currentSetEnd;
-		private DriverStation driverStation = DriverStation.getInstance();
-		
-		public void onStart() {
-			System.out.println("[LightsController] Starting!");
-		}
-		
-		public void onStop() {
-			System.out.println("[LightsController] Stopping!");
-		}
-		
-		public void stop() {
-			if(isRunning) {
-				isRunning = false;
-			} else {
-				System.err.println("Tried to stop, but isRunning is non-truthy!");
-			}
-		}
-		
-		public void toggle(Value value, double currentTime, double lastTime, double onThreshold, double offThreshold) {
-			if(value == Relay.Value.kOn) {
-				if(currentTime - lastTime >= onThreshold) {
-					toggle();
-				}
-			} else if(value == Relay.Value.kOff) {
-				if(currentTime - lastTime >= offThreshold) {
-					toggle();
-				}
-			}
-		}
-
-		private void setLights(Value value) {
-			currentValue = value;
-			upperLights.set(currentValue);
-		}
-		
-		private void toggleLights() {
-			if(currentValue == Relay.Value.kOn) {
-				setLights(Relay.Value.kOff);
-			} else {
-				setLights(Relay.Value.kOn);
-			}
-		}
-		
-		private void set(Value value) {
-			setLights(value);
-			
-			currentSetEnd = Timer.getFPGATimestamp();
-		}
-		
-		private void toggle() {
-			toggleLights();
-			
-			currentSetEnd = Timer.getFPGATimestamp();
-		}
-		
-		public void run() {
-			/**
-			 * When starting LightsController, run `onStart' to do any
-			 * necessary setup tasks.
-			 */
-			onStart();
-			
-			/**
-			 * This loop is called continuously until killed.
-			 */
-			while(isRunning) {
-				if(driverStation.isDisabled() || driverStation.isBrownedOut()) {
-					set(Relay.Value.kOff);
-				} else if(driverStation.isAutonomous()) {
-					set(Relay.Value.kOn);
-				} else if(driverStation.isTest()) {
-					if(leftJoystick.get2Button()) {
-						set(Relay.Value.kOn);
-					} else {
-						set(Relay.Value.kOff);
-					}
-				} else if(driverStation.isOperatorControl()) {
-					if(leftJoystick.get2Button()) {
-						if(Constants.epilepsyMode) {
-							toggle(currentValue, Timer.getFPGATimestamp(), currentSetEnd, 0.0125, 0.0125);
-						} else {
-							set(Relay.Value.kOn);
-						}
-					} else {
-						if(indicateWinching) {
-							toggle(currentValue, Timer.getFPGATimestamp(), currentSetEnd, 0.25, 0.1);
-						} else if(indicateDriving) {
-							toggle(currentValue, Timer.getFPGATimestamp(), currentSetEnd, 0.5, 0.25);
-						} else {
-							toggle(currentValue, Timer.getFPGATimestamp(), currentSetEnd, 2.0, 2.0);
-						}
-					}
-				}
-				
-				/* Microsleep to prevent race issues. */
-				Timer.delay(0.005);
-			}
-			
-			/**
-			 * When shutting down, do any necessary stuff.
-			 */
-			onStop();
-		}
-	}
-	
-	private class LowerLightsController implements LightsController {
-		private boolean isRunning = true;
-		private Value currentValue;
-		private double currentSetEnd;
-		private DriverStation driverStation = DriverStation.getInstance();
-		
-		public void onStart() {
-			System.out.println("[LightsController] Starting!");
-		}
-		
-		public void onStop() {
-			System.out.println("[LightsController] Stopping!");
-		}
-		
-		public void stop() {
-			if(isRunning) {
-				isRunning = false;
-			} else {
-				System.err.println("Tried to stop, but isRunning is non-truthy!");
-			}
-		}
-		
-		public void toggle(Value value, double currentTime, double lastTime, double onThreshold, double offThreshold) {
-			if(value == Relay.Value.kOn) {
-				if(currentTime - lastTime >= onThreshold) {
-					toggle();
-				}
-			} else if(value == Relay.Value.kOff) {
-				if(currentTime - lastTime >= offThreshold) {
-					toggle();
-				}
-			}
-		}
-
-		private void setLights(Value value) {
-			currentValue = value;
-			lowerLights.set(currentValue);
-		}
-		
-		private void toggleLights() {
-			if(currentValue == Relay.Value.kOn) {
-				setLights(Relay.Value.kOff);
-			} else {
-				setLights(Relay.Value.kOn);
-			}
-		}
-		
-		private void set(Value value) {
-			setLights(value);
-			
-			currentSetEnd = Timer.getFPGATimestamp();
-		}
-		
-		private void toggle() {
-			toggleLights();
-			
-			currentSetEnd = Timer.getFPGATimestamp();
-		}
-		
-		public void run() {
-			/**
-			 * When starting LightsController, run `onStart' to do any
-			 * necessary setup tasks.
-			 */
-			onStart();
-			
-			/**
-			 * This loop is called continuously until killed.
-			 */
-			while(isRunning) {
-				if(driverStation.isDisabled() || driverStation.isBrownedOut()) {
-					set(Relay.Value.kOff);
-				} else if(driverStation.isAutonomous()) {
-					set(Relay.Value.kOn);
-				} else if(driverStation.isTest()) {
-					set(Relay.Value.kOn);
-				} else if(driverStation.isOperatorControl()) {
-					if(leftJoystick.get2Button()) {
-						if(Constants.epilepsyMode) {
-							toggle(currentValue, Timer.getFPGATimestamp(), currentSetEnd, 0.02, 0.02);
-						}
-					} else {
-						set(Relay.Value.kOn);
-					}
-				}
-				
-				/* Microsleep to prevent race issues. */
-				Timer.delay(0.005);
-			}
-			
-			/**
-			 * When shutting down, do any necessary stuff.
-			 */
-			onStop();
-		}
-	}
+	private UnderGlowLightsController underGlowLightsController;
 	
 	private double multiplier;
 	
+	private int winchPov;
+	private double winchDesire = 0.0;
+	private double winchThrottle = 0.0;
+
+	private boolean precision = false;
+	private boolean clampClose;
+	private boolean clampOpen;
+	private boolean compressorControlSwitch = false;
+	private boolean compressorControlSwitchPrevious = false;
+
 	public void drive() {
-		if(leftJoystick.getGripButton() || rightJoystick.getGripButton()) {
-			multiplier = 0.4;
-		} else {
-			multiplier = 1.0;
+		/**
+		 * Driving code.
+		 */
+		{
+			precision = leftJoystick.getGripButton() | rightJoystick.getGripButton();
+			multiplier = (precision ? 0.4 : 1.0);
+
+			drive(multiplier * leftJoystick.getBackForwardAxisValue(), multiplier * rightJoystick.getForwardBackAxisValue());
 		}
 		
-		drive(multiplier * leftJoystick.getBackForwardAxisValue(), multiplier * rightJoystick.getForwardBackAxisValue());
-		
-		int pov = rightJoystick.getPov();
-		
-		if((pov > 270 && pov <= 360) || (pov >= 0 && pov < 90)) {
-			if(winchUpperLimitSwitch.get()) {
-				winch(1.0 * Math.abs((1.0 + rightJoystick.getThrottleUpDownAxisValue()) / 2.0));
+		/**
+		 * Winching code.
+		 */
+		{
+			winchPov = rightJoystick.getPov();	
+			winchDesire = (winchPov > 0 ? Math.sin(((winchPov + 90) * Math.PI) / 180.0) : 0.0);
+			winchThrottle = Math.abs((1.0 + rightJoystick.getThrottleUpDownAxisValue()) / 2.0);		
+	
+			if(winchDesire > 0.0) {
+				if(winchUpperLimitSwitch.get()) {
+					winch(winchDesire * winchThrottle);
+				} else {
+					winch(0.0);
+				}
+			} else if(winchDesire < 0.0) {
+				if(winchLowerLimitSwitch.get()) {
+					winch(winchDesire * winchThrottle);
+				}
 			} else {
-				System.out.println("Upper LS Active.");
 				winch(0.0);
 			}
-		} else if((pov > 90 && pov < 270)) {
-			if(winchLowerLimitSwitch.get()) {
-				winch(-1.0 * Math.abs((1.0 + rightJoystick.getThrottleUpDownAxisValue()) / 2.0));
-			} else {
-				System.out.println("Lower LS Active.");
-				winch(0.0);
-			}
-		} else {
-			winch(0.0);
 		}
 		
-		if(leftJoystick.get4Button() || rightJoystick.get3Button()) {
-			clamp.set(ClampStatus.CLOSE);
-		} else if(leftJoystick.get3Button() || rightJoystick.get4Button()) {
-			clamp.set(ClampStatus.OPEN);
+		/**
+		 * Clamping logic.
+		 */
+		{
+			clampClose = leftJoystick.get4Button() | rightJoystick.get3Button();
+			clampOpen = leftJoystick.get3Button() | rightJoystick.get4Button();
+			
+			if(clampClose) {
+				clamp.set(ClampStatus.CLOSE);
+			} else if(clampOpen) {
+				clamp.set(ClampStatus.OPEN);
+			}
+		}
+		
+		/**
+		 * Compressor logic
+		 */
+		if(Constants.PERMISSION_PNEUMATICS_CONTROL) {
+			compressorControlSwitch = leftJoystick.get5Button();
+			
+			if(compressorControlSwitch != compressorControlSwitchPrevious) {
+				if(compressorControlSwitch) {
+					if(compressor.getClosedLoopControl()) {
+						compressor.stop();
+					} else {
+						compressor.start();
+					}
+				}
+				
+				compressorControlSwitchPrevious = compressorControlSwitch;
+			}
 		}
 	}
 	
@@ -265,12 +103,20 @@ public class DriveBaseMadCatzV1MadCatzV1DriveBaseDriver extends DriveBaseDriveBa
 		leftJoystick = left;
 		rightJoystick = right;
 		
-		upperLightsController = new UpperLightsController();
-		new Thread(upperLightsController).start();
+		/**
+		 * Lights controllers
+		 */
+		{
+			upperLightsController = new UpperLightsController(upperLights);
+			new Thread(upperLightsController).start();
 		
-		lowerLightsController = new LowerLightsController();
-		new Thread(lowerLightsController).start();
+			underGlowLightsController = new UnderGlowLightsController(underGlowLights);
+			new Thread(underGlowLightsController).start();
+		}
 		
+		/**
+		 * Set up compressor.
+		 */
 		compressor.setClosedLoopControl(true);	
 		compressor.start();
 	}
