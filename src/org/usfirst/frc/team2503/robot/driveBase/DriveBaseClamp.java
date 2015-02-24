@@ -2,7 +2,6 @@ package org.usfirst.frc.team2503.robot.driveBase;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.Solenoid;
 
 import org.usfirst.frc.team2503.Constants;
 
