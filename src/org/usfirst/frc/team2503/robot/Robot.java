@@ -5,6 +5,7 @@ import java.util.Map;
 
 import edu.wpi.first.wpilibj.*;
 
+import org.usfirst.frc.team2503.Statusable;
 import org.usfirst.frc.team2503.network.clients.PiClient;
 import org.usfirst.frc.team2503.network.clients.StatusClient;
 import org.usfirst.frc.team2503.network.clients.VisionClient;
@@ -12,7 +13,7 @@ import org.usfirst.frc.team2503.robot.driver.DriveBaseMadCatzV1MadCatzV1DriveBas
 import org.usfirst.frc.team2503.joystick.MadCatzV1Joystick;
 import org.usfirst.frc.team2503.joystick.WarriorJoystick.WarriorJoystickSide;
 
-public class Robot extends IterativeRobot {
+public class Robot extends IterativeRobot implements Statusable {
 	public DriveBaseMadCatzV1MadCatzV1DriveBaseDriver madCatzDriveBaseDriver;
 	public DriverStation driverStation;
 	public DigitalInput lowerLimitSwitch;
