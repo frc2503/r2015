@@ -13,7 +13,9 @@ public class DriveBaseDriveBase extends DriveBase {
 	public Talon winch;
 	
 	public Relay upperLights;
+	public Relay upperChannelLights;
 	public Relay underGlowLights;
+	public Relay cameraLightLights;
 	
 	public DigitalInput winchLowerLimitSwitch;
 	public DigitalInput winchUpperLimitSwitch;
@@ -26,7 +28,9 @@ public class DriveBaseDriveBase extends DriveBase {
 	public void setRightPort(final int port) { right = new Talon(port); }
 	public void setWinchPort(final int port) { winch = new Talon(port); }
 	public void setUpperLightsPort(final int port) { upperLights = new Relay(port, Relay.Direction.kReverse); }
+	public void setUpperChannelLightsPort(final int port) { upperChannelLights = new Relay(port, Relay.Direction.kReverse); }
 	public void setUnderGlowLightsPort(final int port) { underGlowLights = new Relay(port, Relay.Direction.kReverse); }
+	public void setCameraLightLightsPort(final int port) { cameraLightLights = new Relay(port, Relay.Direction.kReverse); }
 	public void setupWinchLowerLimitSwitch(final int channel) { winchLowerLimitSwitch = new DigitalInput(channel); }
 	public void setupWinchUpperLimitSwitch(final int channel) { winchUpperLimitSwitch = new DigitalInput(channel); }
 	public void setCompressorPort(final int port) { compressor = new Compressor(port); }
@@ -63,7 +67,9 @@ public class DriveBaseDriveBase extends DriveBase {
 		setWinchPort(Constants.winchTalonPort);
 		
 		setUpperLightsPort(Constants.upperLightsRelayPort);
+		setUpperChannelLightsPort(Constants.upperChannelLightsRelayPort);
 		setUnderGlowLightsPort(Constants.underGlowLightsRelayPort);
+		setCameraLightLightsPort(Constants.cameraLightLightsRelayPort);
 		
 		setupWinchLowerLimitSwitch(Constants.winchLowerLimitSwitchChannel);
 		setupWinchUpperLimitSwitch(Constants.winchUpperLimitSwitchChannel);
@@ -73,13 +79,15 @@ public class DriveBaseDriveBase extends DriveBase {
 		clamp = new DriveBaseClamp();
 	}
 	
-	public DriveBaseDriveBase(final int leftPort, final int rightPort, final int slipPort, final int winchPort, final int upperLightsPort, final int underGlowLightsPort, final int winchLowerLimitSwitchChannel, final int winchUpperLimitSwitchChannel, final int compressorPort) {
+	public DriveBaseDriveBase(final int leftPort, final int rightPort, final int slipPort, final int winchPort, final int upperLightsPort, final int upperChannelLightsPort, final int underGlowLightsPort, final int cameraLightLightsPort, final int winchLowerLimitSwitchChannel, final int winchUpperLimitSwitchChannel, final int compressorPort) {
 		setLeftPort(leftPort);
 		setRightPort(rightPort);
 		setWinchPort(winchPort);
 		
 		setUpperLightsPort(upperLightsPort);
+		setUpperChannelLightsPort(upperChannelLightsPort);
 		setUnderGlowLightsPort(underGlowLightsPort);
+		setCameraLightLightsPort(cameraLightLightsPort);
 		
 		setupWinchLowerLimitSwitch(winchLowerLimitSwitchChannel);
 		setupWinchUpperLimitSwitch(winchUpperLimitSwitchChannel);
