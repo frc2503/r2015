@@ -6,8 +6,10 @@ public class Constants {
 	public static final int winchTalonPort = 2;
 	
 	public static final int upperLightsRelayPort = 0;
-	public static final int underGlowLightsRelayPort = 1;
-	
+	public static final int upperChannelLightsRelayPort = 1;
+	public static final int underGlowLightsRelayPort = 2;
+	public static final int cameraLightLightsRelayPort = 3;
+
 	public static int compressorPort = 0;
 	
 	public static final int winchLowerLimitSwitchChannel = 0;
@@ -27,7 +29,5 @@ public class Constants {
 	public static final String piStatusUrl = piBaseUrl + "/status?k=robot";
 	public static final String piClientVersion = "0.0.0";
 	
-	public static final boolean epilepsyMode = true;
-
 	public static final boolean PERMISSION_COMPRESSOR_CONTROL = true;
 }
