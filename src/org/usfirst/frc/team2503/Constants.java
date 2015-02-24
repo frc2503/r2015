@@ -1,7 +1,5 @@
 package org.usfirst.frc.team2503;
 
-import java.net.URL;
-
 public class Constants {
 	public static final int leftTalonPort = 0;
 	public static final int rightTalonPort = 1;
