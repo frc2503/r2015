@@ -15,8 +15,8 @@ public class Constants {
 	public static final int winchLowerLimitSwitchChannel = 0;
 	public static final int winchUpperLimitSwitchChannel = 1;
 	
-	public static final int driveBaseLeftSolenoidChannel = 1;
-	public static final int driveBaseRightSolenoidChannel = 0;
+	public static final int driveBaseLeftSolenoidChannel = 0;
+	public static final int driveBaseRightSolenoidChannel = 1;
 	
 	public static final double inputIndicationNullZone = 0.125;
 	
@@ -29,5 +29,6 @@ public class Constants {
 	public static final String piStatusUrl = piBaseUrl + "/status?k=robot";
 	public static final String piClientVersion = "0.0.0";
 	
+	public static final boolean PERMISSION_LIGHTS_CONTROL = true;
 	public static final boolean PERMISSION_COMPRESSOR_CONTROL = true;
 }
