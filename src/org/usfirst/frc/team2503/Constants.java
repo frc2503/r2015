@@ -24,7 +24,7 @@ public class Constants {
 	public static final String piBaseUrl = "http://192.168.1.103:5800";
 	public static final String piWebUrl = piBaseUrl + "/web";
 	public static final String piVisionUrl = piBaseUrl + "/vision";
-	public static final String piStatusUrl = piBaseUrl + "/status?k=l33tr0b0t";
+	public static final String piStatusUrl = piBaseUrl + "/status?k=robot";
 	public static final String piClientVersion = "0.0.0";
 	
 	public static final boolean epilepsyMode = true;
