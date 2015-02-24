@@ -29,5 +29,5 @@ public class Constants {
 	
 	public static final boolean epilepsyMode = true;
 
-	public static final boolean PERMISSION_PNEUMATICS_CONTROL = true;
+	public static final boolean PERMISSION_COMPRESSOR_CONTROL = true;
 }
