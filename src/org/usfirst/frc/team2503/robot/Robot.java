@@ -1,10 +1,10 @@
 package org.usfirst.frc.team2503.robot;
 
 import java.net.MalformedURLException;
-import java.util.Map;
 
 import edu.wpi.first.wpilibj.*;
 
+import org.json.JSONObject;
 import org.usfirst.frc.team2503.Statusable;
 import org.usfirst.frc.team2503.network.clients.PiClient;
 import org.usfirst.frc.team2503.network.clients.StatusClient;
@@ -16,117 +16,101 @@ import org.usfirst.frc.team2503.joystick.WarriorJoystick.WarriorJoystickSide;
 public class Robot extends IterativeRobot implements Statusable {
 	public DriveBaseMadCatzV1MadCatzV1DriveBaseDriver madCatzDriveBaseDriver;
 	public DriverStation driverStation;
-	public DigitalInput lowerLimitSwitch;
-		
-	public Map<String, String> modeInformation;
-	
-    public void robotInit() {}
-    
-    public void disabledInit() {
-    	/**
-    	 * Now initializing for disabled mode.
-    	 */
-    	modeInformation.put("name", "disabled");
-    	modeInformation.put("status", "initializing");
-    	StatusClient.localStatus.put("mode", modeInformation);
-   
-    	
-    	
-    	/**
-    	 * Now entering disabled mode.
-    	 */
-    	modeInformation.put("name", "disabled");
-    	modeInformation.put("status", "periodic");
-    	StatusClient.localStatus.put("mode", modeInformation);	
-    }
-    
-    public void disabledPeriodic() {
-	
-    }
-
-    public void autonomousInit() {
-    	/**
-    	 * Now initializing for autonomous mode.
-    	 */
-    	modeInformation.put("name", "autonomous");
-    	modeInformation.put("status", "initializing");
-    	StatusClient.localStatus.put("mode", modeInformation);
-   
-    	if(VisionClient.data != null) {
-    		/**
-    		 * We have the vision! :D
-    		 */
-    		
-    		madCatzDriveBaseDriver.drive(0.0, 0.0);
-    	} else {
-    		/**
-    		 * We're flying blind... :'(
-    		 */
-    	}
-    	
-    	/**
-    	 * Now entering autonomous mode.
-    	 */
-    	modeInformation.put("name", "autonomous");
-    	modeInformation.put("status", "periodic");
-    	StatusClient.localStatus.put("mode", modeInformation);	
-    }
-    
-    public void autonomousPeriodic() {
-    }
-    
-    public void teleopInit() {
-    	/**
-    	 * Now initializing for autonomous mode.
-    	 */
-    	modeInformation.put("name", "teleoperated");
-    	modeInformation.put("status", "initializing");
-    	StatusClient.localStatus.put("mode", modeInformation);
-   
-    	
-    	
-    	/**
-    	 * Now entering autonomous mode.
-    	 */
-    	modeInformation.put("name", "teleoperated");
-    	modeInformation.put("status", "periodic");
-    	StatusClient.localStatus.put("mode", modeInformation);	
-    }
-    
-    public void teleopPeriodic() {
-    	madCatzDriveBaseDriver.drive();
-    }
-    
-    public void testInit() {
-    	/**
-    	 * Now initializing for test mode.
-    	 */
-    	modeInformation.put("name", "test");
-    	modeInformation.put("status", "initializing");
-    	StatusClient.localStatus.put("mode", modeInformation);
-   
-    	/**
-    	 * Now entering test mode.
-    	 */
-    	modeInformation.put("name", "test");
-    	modeInformation.put("status", "periodic");
-    	StatusClient.localStatus.put("mode", modeInformation);	
-    }
-    
-    public void testPeriodic() {
-    }
-    
-    public Robot() {
-    	madCatzDriveBaseDriver = new DriveBaseMadCatzV1MadCatzV1DriveBaseDriver(new MadCatzV1Joystick(WarriorJoystickSide.LEFT_PRIMARY), new MadCatzV1Joystick(WarriorJoystickSide.RIGHT_PRIMARY));
-    	driverStation = DriverStation.getInstance();
-    	
-    	try {
-			PiClient piClient = new PiClient();
-			Thread thread = new Thread(piClient);
+	public JSONObject __status__ = new JSONObject();
 			
-			thread.start();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
+	public void robotInit() {
+		__status__.put("alliance", driverStation.getAlliance().name());
+	}
+
+	private AnalogInput pwm;
+
+	public void disabledInit() {
+		__status__.put("mode", new JSONObject().put("name", "disabled").put("status", "initializing"));
+		
+		__status__.put("mode", new JSONObject().put("name", "disabled").put("status", "periodic"));
+	}
+
+	public void disabledPeriodic() {
+		
+	}
+
+	public void autonomousInit() {
+		__status__.put("mode", new JSONObject().put("name", "autonomous").put("status", "initializing"));
+		
+		if(VisionClient.hslImage != null) {
+			/**
+			 * We have the vision! :D
+			 */
+			
+			madCatzDriveBaseDriver.drive(0.0, 0.0);
+		} else {
+			/**
+			 * We're flying blind... :'(
+			 */
 		}
-    }
+		
+		__status__.put("mode", new JSONObject().put("name", "autonomous").put("status", "periodic"));
+	}
+	
+	public void autonomousPeriodic() {
+	}
+	
+	public void teleopInit() {
+		__status__.put("mode", new JSONObject().put("name", "teleoperated").put("status", "initializing"));
+		
+		
+		
+		__status__.put("mode", new JSONObject().put("name", "teleoperated").put("status", "periodic"));
+	}
+	
+	public void teleopPeriodic() {
+		madCatzDriveBaseDriver.drive();
+		
+		System.out.println(pwm.getValue());
+	}
+	
+	public void testInit() {
+		__status__.put("mode", new JSONObject().put("name", "test").put("status", "initializing"));
+		
+		
+		
+		__status__.put("mode", new JSONObject().put("name", "test").put("status", "periodic"));
+	}
+	
+	public void testPeriodic() {
+	}
+	
+	public Robot() {
+		StatusClient.statusController.addStatusable("robot", this);
+	
+		madCatzDriveBaseDriver = new DriveBaseMadCatzV1MadCatzV1DriveBaseDriver(new MadCatzV1Joystick(WarriorJoystickSide.LEFT_PRIMARY), new MadCatzV1Joystick(WarriorJoystickSide.RIGHT_PRIMARY));
+		driverStation = DriverStation.getInstance();
+		
+		pwm = new AnalogInput(3);
+		
+		try {
+				PiClient piClient = new PiClient();
+				Thread thread = new Thread(piClient);
+				
+				thread.start();
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+	}
+
+	public JSONObject getStatus() {
+		return __status__;
+	}
+
+	public JSONObject getStatus(String key) {
+		return new JSONObject(__status__.get(key));
+	}
+
+	public JSONObject putStatus(String key, JSONObject object) {
+		return __status__.put(key, object);
+	}
+
+	public JSONObject deleteStatus(String key) {
+		return __status__.put(key, (Object)null);
+	}
 }
