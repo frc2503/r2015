@@ -2,41 +2,34 @@ package org.usfirst.frc.team2503.robot.driver;
 
 import org.usfirst.frc.team2503.Constants;
 import org.usfirst.frc.team2503.joystick.MadCatzV1Joystick;
+import org.usfirst.frc.team2503.robot.controllers.lights.LightsController;
+import org.usfirst.frc.team2503.robot.controllers.lights.MasterLightsController;
+import org.usfirst.frc.team2503.robot.controllers.lights.MasterLightsController.MasterLightsControllerStatus;
 import org.usfirst.frc.team2503.robot.driveBase.ClampStatus;
 import org.usfirst.frc.team2503.robot.driveBase.DriveBaseDriveBase;
-import org.usfirst.frc.team2503.robot.lights.LightsController;
-import org.usfirst.frc.team2503.robot.lights.UnderGlowLightsController;
-import org.usfirst.frc.team2503.robot.lights.UpperLightsController;
-
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Relay;
-import edu.wpi.first.wpilibj.Relay.Value;
-import edu.wpi.first.wpilibj.Timer;
 
 public class DriveBaseMadCatzV1MadCatzV1DriveBaseDriver extends DriveBaseDriveBase implements Driver {
-	private MadCatzV1Joystick leftJoystick;
-	private MadCatzV1Joystick rightJoystick;
-	private UpperLightsController upperLightsController;
-	private UnderGlowLightsController underGlowLightsController;
+	public MadCatzV1Joystick leftJoystick;
+	public MadCatzV1Joystick rightJoystick;
+
+	public LightsController upperLightsController;
+	public LightsController upperChannelLightsController;
+	public LightsController underGlowLightsController;
+	public LightsController cameraLightLightsController;
+	public MasterLightsController masterLightsController;
 	
 	private double multiplier;
-	
-	private int winchPov;
-	private double winchDesire = 0.0;
-	private double winchThrottle = 0.0;
 
 	private boolean precision = false;
-	private boolean clampClose;
-	private boolean clampOpen;
 	private boolean compressorControlSwitch = false;
 	private boolean compressorControlSwitchPrevious = false;
-
+	
 	public void drive() {
 		/**
 		 * Driving code.
 		 */
 		{
-			precision = leftJoystick.getGripButton() | rightJoystick.getGripButton();
+			precision = leftJoystick.getGripButton();
 			multiplier = (precision ? 0.4 : 1.0);
 
 			drive(multiplier * leftJoystick.getBackForwardAxisValue(), multiplier * rightJoystick.getForwardBackAxisValue());
@@ -46,9 +39,10 @@ public class DriveBaseMadCatzV1MadCatzV1DriveBaseDriver extends DriveBaseDriveBa
 		 * Winching code.
 		 */
 		{
-			winchPov = rightJoystick.getPov();	
-			winchDesire = (winchPov > 0 ? Math.sin(((winchPov + 90) * Math.PI) / 180.0) : 0.0);
-			winchThrottle = Math.abs((1.0 + rightJoystick.getThrottleUpDownAxisValue()) / 2.0);		
+			int winchPov = rightJoystick.getPov();
+			
+			double winchDesire = (winchPov >= 0 ? Math.sin(((winchPov + 90) * Math.PI) / 180.0) : 0.0);
+			double winchThrottle = Math.abs((1.0 + rightJoystick.getThrottleUpDownAxisValue()) / 2.0);
 	
 			if(winchDesire > 0.0) {
 				if(winchUpperLimitSwitch.get()) {
@@ -59,6 +53,8 @@ public class DriveBaseMadCatzV1MadCatzV1DriveBaseDriver extends DriveBaseDriveBa
 			} else if(winchDesire < 0.0) {
 				if(winchLowerLimitSwitch.get()) {
 					winch(winchDesire * winchThrottle);
+				} else {
+					winch(0.0);
 				}
 			} else {
 				winch(0.0);
@@ -66,35 +62,50 @@ public class DriveBaseMadCatzV1MadCatzV1DriveBaseDriver extends DriveBaseDriveBa
 		}
 		
 		/**
-		 * Clamping logic.
+		 * Clamping code.
 		 */
 		{
-			clampClose = leftJoystick.get4Button() | rightJoystick.get3Button();
-			clampOpen = leftJoystick.get3Button() | rightJoystick.get4Button();
-			
-			if(clampClose) {
+			if(rightJoystick.get2Button()){
 				clamp.set(ClampStatus.CLOSE);
-			} else if(clampOpen) {
+			} else if(rightJoystick.getStickTriggerButton()) {
 				clamp.set(ClampStatus.OPEN);
 			}
 		}
 		
-		/**
-		 * Compressor logic
-		 */
-		if(Constants.PERMISSION_PNEUMATICS_CONTROL) {
-			compressorControlSwitch = leftJoystick.get5Button();
-			
-			if(compressorControlSwitch != compressorControlSwitchPrevious) {
-				if(compressorControlSwitch) {
-					if(compressor.getClosedLoopControl()) {
-						compressor.stop();
-					} else {
-						compressor.start();
-					}
-				}
+		{
+			/**
+			 * Compressor code.
+			 */
+			if(Constants.PERMISSION_COMPRESSOR_CONTROL) {
+				compressorControlSwitch = leftJoystick.get5Button();
 				
-				compressorControlSwitchPrevious = compressorControlSwitch;
+				if(compressorControlSwitch != compressorControlSwitchPrevious) {
+					if(compressorControlSwitch) {
+						if(compressor.getClosedLoopControl()) {
+							compressor.stop();
+						} else {
+							compressor.start();
+						}
+					}
+					
+					compressorControlSwitchPrevious = compressorControlSwitch;
+				}
+			}
+		}
+		
+		{
+			/**
+			 * Post-op lights code.
+			 */
+			
+			if(leftJoystick.get2Button()) {
+				masterLightsController.set(MasterLightsControllerStatus.OVERRIDE_SEIZURE);
+			} else if(indicateDriving && !indicateWinching) {
+				masterLightsController.set(MasterLightsControllerStatus.DRIVING);
+			} else if(!indicateDriving && indicateWinching) {
+				masterLightsController.set(MasterLightsControllerStatus.WINCHING);
+			} else if(!indicateDriving && !indicateWinching) {
+				masterLightsController.set(MasterLightsControllerStatus.IDLE);
 			}
 		}
 	}
@@ -107,11 +118,19 @@ public class DriveBaseMadCatzV1MadCatzV1DriveBaseDriver extends DriveBaseDriveBa
 		 * Lights controllers
 		 */
 		{
-			upperLightsController = new UpperLightsController(upperLights);
+			upperLightsController = new LightsController(upperLights);
 			new Thread(upperLightsController).start();
+
+			upperChannelLightsController = new LightsController(upperChannelLights);
+			new Thread(upperChannelLightsController).start();
 		
-			underGlowLightsController = new UnderGlowLightsController(underGlowLights);
+			underGlowLightsController = new LightsController(underGlowLights);
 			new Thread(underGlowLightsController).start();
+			
+			cameraLightLightsController = new LightsController(cameraLightLights);
+			new Thread(cameraLightLightsController).start();
+			
+			masterLightsController = new MasterLightsController(upperLightsController, upperChannelLightsController, underGlowLightsController, cameraLightLightsController);
 		}
 		
 		/**
