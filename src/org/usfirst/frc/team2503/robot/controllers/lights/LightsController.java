@@ -9,13 +9,17 @@ public class LightsController implements Runnable {
 		OFF(0),
 		ON(1),
 		
-		MILD_EPILEPSY(2),
-		MODERATE_EPILEPSY(3),
-		SEVERE_EPILEPSY(4),
+		SLOW_EPILEPSY(100),
+		MEDIUM_EPILEPSY(101),
+		FAST_EPILEPSY(102),
 		
-		SLOW_CYCLE(5),
-		MEDIUM_CYCLE(6),
-		FAST_CYCLE(7);
+		SLOW_STROBE(200),
+		MEDIUM_STROBE(201),
+		FAST_STROBE(202),
+		
+		SLOW_CYCLE(300),
+		MEDIUM_CYCLE(301),
+		FAST_CYCLE(302);
 		
 		private final int value;
 		
@@ -113,12 +117,24 @@ public class LightsController implements Runnable {
 				set(Relay.Value.kOn);
 				break;
 				
-			case MILD_EPILEPSY:
-			case MODERATE_EPILEPSY:
-				toggle(currentValue, Timer.getFPGATimestamp(), currentSetEnd, 0.1, 0.1);
+			case SLOW_EPILEPSY:
+				toggle(currentValue, Timer.getFPGATimestamp(), currentSetEnd, 0.25, 0.25);
 				break;
-			case SEVERE_EPILEPSY:
+			case MEDIUM_EPILEPSY:
+				toggle(currentValue, Timer.getFPGATimestamp(), currentSetEnd, 0.125, 0.125);
+				break;
+			case FAST_EPILEPSY:
 				toggle(currentValue, Timer.getFPGATimestamp(), currentSetEnd, 0.0125, 0.0125);
+				break;
+				
+			case SLOW_STROBE:
+				toggle(currentValue, Timer.getFPGATimestamp(), currentSetEnd, 0.0125, 1.0);
+				break;
+			case MEDIUM_STROBE:
+				toggle(currentValue, Timer.getFPGATimestamp(), currentSetEnd, 0.0125, 0.25);
+				break;
+			case FAST_STROBE:
+				toggle(currentValue, Timer.getFPGATimestamp(), currentSetEnd, 0.0125, 0.0625);
 				break;
 				
 			case SLOW_CYCLE:
@@ -137,7 +153,7 @@ public class LightsController implements Runnable {
 			}
 			
 			/* Microsleep to prevent race issues. */
-			Timer.delay(0.005);
+			Timer.delay(0.0025);
 		}
 		
 		/**

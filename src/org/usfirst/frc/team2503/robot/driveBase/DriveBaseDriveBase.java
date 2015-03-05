@@ -38,6 +38,10 @@ public class DriveBaseDriveBase extends DriveBase {
 	public boolean indicateWinching = false;
 	public boolean indicateDriving = false;
 
+	public void drive(double bothValue) {
+		drive(bothValue, bothValue);
+	}
+	
 	public void drive(double leftValue, double rightValue) {
 		double totalValue = Math.abs(leftValue) + Math.abs(rightValue);
 		

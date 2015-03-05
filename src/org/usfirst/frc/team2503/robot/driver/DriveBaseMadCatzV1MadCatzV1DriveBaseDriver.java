@@ -21,8 +21,6 @@ public class DriveBaseMadCatzV1MadCatzV1DriveBaseDriver extends DriveBaseDriveBa
 	private double multiplier;
 
 	private boolean precision = false;
-	private boolean compressorControlSwitch = false;
-	private boolean compressorControlSwitchPrevious = false;
 	
 	public void drive() {
 		/**
@@ -30,16 +28,22 @@ public class DriveBaseMadCatzV1MadCatzV1DriveBaseDriver extends DriveBaseDriveBa
 		 */
 		{
 			precision = leftJoystick.getGripButton();
-			multiplier = (precision ? 0.4 : 1.0);
+			multiplier = (precision ? 0.4 : 1.0) * Constants.teleopPowerMultiplier;
 
-			drive(multiplier * leftJoystick.getBackForwardAxisValue(), multiplier * rightJoystick.getForwardBackAxisValue());
+			double leftAxisValue = leftJoystick.getBackForwardAxisValue();
+			double rightAxisValue = rightJoystick.getForwardBackAxisValue();
+			
+			double leftValue = ((leftAxisValue * Math.abs(leftAxisValue)) + leftAxisValue) / 2.0;
+			double rightValue = ((rightAxisValue * Math.abs(rightAxisValue)) + rightAxisValue) / 2.0;
+			
+			drive(multiplier * leftValue, multiplier * rightValue);
 		}
 		
 		/**
 		 * Winching code.
 		 */
 		{
-			int winchPov = rightJoystick.getPov();
+			int winchPov = leftJoystick.getPov();
 			
 			double winchDesire = (winchPov >= 0 ? Math.sin(((winchPov + 90) * Math.PI) / 180.0) : 0.0);
 			double winchThrottle = Math.abs((1.0 + rightJoystick.getThrottleUpDownAxisValue()) / 2.0);
@@ -77,18 +81,16 @@ public class DriveBaseMadCatzV1MadCatzV1DriveBaseDriver extends DriveBaseDriveBa
 			 * Compressor code.
 			 */
 			if(Constants.PERMISSION_COMPRESSOR_CONTROL) {
-				compressorControlSwitch = leftJoystick.get5Button();
-				
-				if(compressorControlSwitch != compressorControlSwitchPrevious) {
-					if(compressorControlSwitch) {
-						if(compressor.getClosedLoopControl()) {
-							compressor.stop();
-						} else {
-							compressor.start();
-						}
+				double compressorThrottle = Math.abs((1.0 + leftJoystick.getThrottleDownUpAxisValue()) / 2.0);
+
+				if(compressorThrottle > 0.5) {
+					if(compressor.getClosedLoopControl()) {
+						compressor.stop();
 					}
-					
-					compressorControlSwitchPrevious = compressorControlSwitch;
+				} else {
+					if(!compressor.getClosedLoopControl()) {
+						compressor.start();
+					}
 				}
 			}
 		}
@@ -99,7 +101,7 @@ public class DriveBaseMadCatzV1MadCatzV1DriveBaseDriver extends DriveBaseDriveBa
 			 */
 			
 			if(leftJoystick.get2Button()) {
-				masterLightsController.set(MasterLightsControllerStatus.OVERRIDE_SEIZURE);
+				masterLightsController.set(MasterLightsControllerStatus.ALL_FAST_STROBE);
 			} else if(indicateDriving && !indicateWinching) {
 				masterLightsController.set(MasterLightsControllerStatus.DRIVING);
 			} else if(!indicateDriving && indicateWinching) {
