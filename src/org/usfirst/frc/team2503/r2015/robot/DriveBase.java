@@ -21,7 +21,6 @@ public class DriveBase {
 	public DigitalInput winchUpperLimitSwitch;
 	
 	public Compressor compressor;
-	
 	public Clamp clamp;
 	
 	public void setLeftPort(final int port) { left = new Talon(port); }

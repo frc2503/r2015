@@ -1,4 +1,4 @@
-package org.usfirst.frc.team2503.r2015.robot.controllers;
+package org.usfirst.frc.team2503.r2015.robot.lights;
 
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Timer;

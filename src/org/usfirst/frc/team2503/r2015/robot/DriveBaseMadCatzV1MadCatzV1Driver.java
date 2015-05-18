@@ -2,11 +2,11 @@ package org.usfirst.frc.team2503.r2015.robot;
 
 import org.usfirst.frc.team2503.r2015.Constants;
 import org.usfirst.frc.team2503.r2015.controls.joysticks.MadCatzV1Joystick;
-import org.usfirst.frc.team2503.r2015.robot.controllers.LightsController;
-import org.usfirst.frc.team2503.r2015.robot.controllers.MasterLightsController;
-import org.usfirst.frc.team2503.r2015.robot.controllers.MasterLightsController.MasterLightsControllerStatus;
+import org.usfirst.frc.team2503.r2015.robot.lights.LightsController;
+import org.usfirst.frc.team2503.r2015.robot.lights.MasterLightsController;
+import org.usfirst.frc.team2503.r2015.robot.lights.MasterLightsController.MasterLightsControllerStatus;
 
-public class DriveBaseMadCatzV1MadCatzV1Driver extends DriveBase implements Driver {
+public class DriveBaseMadCatzV1MadCatzV1Driver extends DriveBase {
 	public MadCatzV1Joystick leftJoystick;
 	public MadCatzV1Joystick rightJoystick;
 
@@ -26,7 +26,7 @@ public class DriveBaseMadCatzV1MadCatzV1Driver extends DriveBase implements Driv
 		 */
 		{
 			precision = leftJoystick.getGripButton();
-			multiplier = (precision ? 0.4 : 1.0) * Constants.teleopPowerMultiplier;
+			multiplier = (precision ? 0.4 : 1.0) * Constants.powerMultiplier;
 
 			double leftAxisValue = leftJoystick.getBackForwardAxisValue();
 			double rightAxisValue = rightJoystick.getForwardBackAxisValue();

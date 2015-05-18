@@ -1,6 +1,6 @@
-package org.usfirst.frc.team2503.r2015.robot.controllers;
+package org.usfirst.frc.team2503.r2015.robot.lights;
 
-import org.usfirst.frc.team2503.r2015.robot.controllers.LightsController.LightsControllerStatus;
+import org.usfirst.frc.team2503.r2015.robot.lights.LightsController.LightsControllerStatus;
 
 public class MasterLightsController {
 	public enum MasterLightsControllerStatus {
