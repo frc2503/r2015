@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 public interface ControlLayout {
 
-	public double[] get();
+	public HashMap<String, ?> get();
+	
+	public String getName();
 	
 }

@@ -10,19 +10,23 @@ public class LimitedTalon extends Talon implements LimitedSpeedController {
 	public LimitSwitch lowerLimitSwitch;
 	public LimitSwitch upperLimitSwitch;
 	
-	public void set(double targetOutput) {
+	public void setTarget(double targetOutput) {
 		if(targetOutput < 0.0) {
-			if(lowerLimitSwitch.get()) {
+			if(lowerLimitSwitch.isActivated()) {
+				System.out.println("Trying to lower past lower, switch active.");
 				set(0.0);
-			} else if(!lowerLimitSwitch.get()) {
+			} else if(!lowerLimitSwitch.isActivated()) {
 				set(targetOutput);
 			}
-		} else if(targetOutput > 1.0) {
-			if(upperLimitSwitch.get()) {
+		} else if(targetOutput > 0.0) {
+			if(upperLimitSwitch.isActivated()) {
+				System.out.println("Trying to raise past upper, switch active.");
 				set(0.0);
-			} else if(!upperLimitSwitch.get()) {
+			} else if(!upperLimitSwitch.isActivated()) {
 				set(targetOutput);
 			}
+		} else {
+			set(0.0);
 		}
 	}
 	
@@ -31,6 +35,13 @@ public class LimitedTalon extends Talon implements LimitedSpeedController {
 		
 		this.lowerLimitSwitch = new LimitSwitch(lowerLimitSwitchChannel, lowerLimitSwitchType);
 		this.upperLimitSwitch = new LimitSwitch(upperLimitSwitchChannel, lowerLimitSwitchType);
+	}
+	
+	public LimitedTalon(final int channel, final int lowerLimitSwitchChannel, final int upperLimitSwitchChannel) {
+		super(channel);
+		
+		this.lowerLimitSwitch = new LimitSwitch(lowerLimitSwitchChannel);
+		this.upperLimitSwitch = new LimitSwitch(upperLimitSwitchChannel);
 	}
 
 }

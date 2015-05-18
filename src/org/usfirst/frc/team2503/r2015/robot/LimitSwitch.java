@@ -23,15 +23,15 @@ public class LimitSwitch extends DigitalInput {
 	
 	public LimitSwitchType type;
 	
-	public boolean get() {
-		boolean input = super.get();
+	public boolean isActivated() {
+		boolean input = get();
 		
 		/**
 		 * If the LimitSwitch is normally open circuit, then input will be
 		 * only true when the thing is pressed; otherwise (when the LimitSwitch
 		 * is normally closed), then negate to get the appropriate result.
 		 */
-		return (type == LimitSwitchType.NORMALLY_OPEN ? input : !input);
+		return (type == LimitSwitchType.NORMALLY_CLOSED ? input : !input);
 	}
 	
 	public LimitSwitch(final int channel, LimitSwitchType type) {

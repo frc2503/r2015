@@ -15,8 +15,8 @@ public class Constants {
 	public static final int winchLowerLimitSwitchChannel = 0;
 	public static final int winchUpperLimitSwitchChannel = 1;
 	
-	public static final int driveBaseLeftSolenoidChannel = 1;
-	public static final int driveBaseRightSolenoidChannel = 0;
+	public static final int driveBaseLeftSolenoidChannel = 0;
+	public static final int driveBaseRightSolenoidChannel = 1;
 	
 	public static final double inputIndicationNullZone = 0.125;
 	

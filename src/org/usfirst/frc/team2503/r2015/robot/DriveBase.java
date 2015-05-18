@@ -6,16 +6,25 @@ import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Talon;
 
 import org.usfirst.frc.team2503.r2015.Constants;
+import org.usfirst.frc.team2503.r2015.robot.lights.LightsController;
+import org.usfirst.frc.team2503.r2015.robot.lights.MasterLightsController;
+import org.usfirst.frc.team2503.r2015.robot.lights.MasterLightsController.MasterLightsControllerStatus;
 
 public class DriveBase {
 	public Talon left;
 	public Talon right;
-	public Talon winch;
+	public Winch winch;
 	
 	public Relay upperLights;
 	public Relay upperChannelLights;
 	public Relay underGlowLights;
 	public Relay cameraLightLights;
+	
+	public LightsController upperLightsController;
+	public LightsController upperChannelLightsController;
+	public LightsController underGlowLightsController;
+	public LightsController cameraLightLightsController;
+	public MasterLightsController masterLightsController;
 	
 	public DigitalInput winchLowerLimitSwitch;
 	public DigitalInput winchUpperLimitSwitch;
@@ -25,7 +34,7 @@ public class DriveBase {
 	
 	public void setLeftPort(final int port) { left = new Talon(port); }
 	public void setRightPort(final int port) { right = new Talon(port); }
-	public void setWinchPort(final int port) { winch = new Talon(port); }
+	public void setWinchPort(final int port) { winch = new Winch(port); }
 	public void setUpperLightsPort(final int port) { upperLights = new Relay(port, Relay.Direction.kReverse); }
 	public void setUpperChannelLightsPort(final int port) { upperChannelLights = new Relay(port, Relay.Direction.kReverse); }
 	public void setUnderGlowLightsPort(final int port) { underGlowLights = new Relay(port, Relay.Direction.kReverse); }
@@ -34,20 +43,16 @@ public class DriveBase {
 	public void setupWinchUpperLimitSwitch(final int channel) { winchUpperLimitSwitch = new DigitalInput(channel); }
 	public void setCompressorPort(final int port) { compressor = new Compressor(port); }
 	
-	public boolean indicateWinching = false;
-	public boolean indicateDriving = false;
+	public boolean winching = false;
+	public boolean driving = false;
 
-	public void drive(double bothValue) {
-		drive(bothValue, bothValue);
-	}
-	
 	public void drive(double leftValue, double rightValue) {
 		double totalValue = Math.abs(leftValue) + Math.abs(rightValue);
 		
 		if(totalValue >= Constants.inputIndicationNullZone || totalValue <= -Constants.inputIndicationNullZone) {
-			indicateDriving = true;
+			driving = true;
 		} else {
-			indicateDriving = false;
+			driving = false;
 		}
 		
 		left.set(leftValue * Constants.masterPowerMultiplier);
@@ -56,12 +61,26 @@ public class DriveBase {
 
 	public void winch(double winchValue) {
 		if(winchValue >= Constants.inputIndicationNullZone || winchValue <= -Constants.inputIndicationNullZone) {
-			indicateWinching = true;
+			winching = true;
 		} else {
-			indicateWinching = false;
+			winching = false;
 		}
 		
 		winch.set(winchValue);
+	}
+	
+	public void updateLights(MasterLightsControllerStatus overrideStatus) {
+		if(overrideStatus != null) {
+			masterLightsController.set(overrideStatus);
+		} else {
+			if(driving && !winching) {
+				masterLightsController.set(MasterLightsControllerStatus.DRIVING);
+			} else if(!driving && winching) {
+				masterLightsController.set(MasterLightsControllerStatus.WINCHING);
+			} else if(!driving && !winching) {
+				masterLightsController.set(MasterLightsControllerStatus.IDLE);
+			}
+		}
 	}
 	
 	public DriveBase() {
@@ -74,29 +93,37 @@ public class DriveBase {
 		setUnderGlowLightsPort(Constants.underGlowLightsRelayPort);
 		setCameraLightLightsPort(Constants.cameraLightLightsRelayPort);
 		
-		setupWinchLowerLimitSwitch(Constants.winchLowerLimitSwitchChannel);
-		setupWinchUpperLimitSwitch(Constants.winchUpperLimitSwitchChannel);
-		
 		setCompressorPort(Constants.compressorPort);
 		
-		clamp = new DriveBaseClamp();
+		/**
+		 * Set up the Clamp.
+		 */
+		clamp = new Clamp();
+		
+		/**
+		 * Set up compressor.
+		 */
+		compressor.setClosedLoopControl(true);	
+		compressor.start();
+		
+		/**
+		 * Lights controllers
+		 */
+		{
+			upperLightsController = new LightsController(upperLights);
+			new Thread(upperLightsController).start();
+
+			upperChannelLightsController = new LightsController(upperChannelLights);
+			new Thread(upperChannelLightsController).start();
+		
+			underGlowLightsController = new LightsController(underGlowLights);
+			new Thread(underGlowLightsController).start();
+			
+			cameraLightLightsController = new LightsController(cameraLightLights);
+			new Thread(cameraLightLightsController).start();
+			
+			masterLightsController = new MasterLightsController(upperLightsController, upperChannelLightsController, underGlowLightsController, cameraLightLightsController);
+		}
 	}
 	
-	public DriveBase(final int leftPort, final int rightPort, final int slipPort, final int winchPort, final int upperLightsPort, final int upperChannelLightsPort, final int underGlowLightsPort, final int cameraLightLightsPort, final int winchLowerLimitSwitchChannel, final int winchUpperLimitSwitchChannel, final int compressorPort) {
-		setLeftPort(leftPort);
-		setRightPort(rightPort);
-		setWinchPort(winchPort);
-		
-		setUpperLightsPort(upperLightsPort);
-		setUpperChannelLightsPort(upperChannelLightsPort);
-		setUnderGlowLightsPort(underGlowLightsPort);
-		setCameraLightLightsPort(cameraLightLightsPort);
-		
-		setupWinchLowerLimitSwitch(winchLowerLimitSwitchChannel);
-		setupWinchUpperLimitSwitch(winchUpperLimitSwitchChannel);
-		
-		setCompressorPort(compressorPort);
-		
-		clamp = new DriveBaseClamp();
-	}
 }
