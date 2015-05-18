@@ -6,7 +6,7 @@ import org.usfirst.frc.team2503.r2015.robot.controllers.LightsController;
 import org.usfirst.frc.team2503.r2015.robot.controllers.MasterLightsController;
 import org.usfirst.frc.team2503.r2015.robot.controllers.MasterLightsController.MasterLightsControllerStatus;
 
-public class DriveBaseMadCatzV1MadCatzV1DriveBaseDriver extends DriveBaseDriveBase implements Driver {
+public class DriveBaseMadCatzV1MadCatzV1Driver extends DriveBase implements Driver {
 	public MadCatzV1Joystick leftJoystick;
 	public MadCatzV1Joystick rightJoystick;
 
@@ -110,7 +110,7 @@ public class DriveBaseMadCatzV1MadCatzV1DriveBaseDriver extends DriveBaseDriveBa
 		}
 	}
 	
-	public DriveBaseMadCatzV1MadCatzV1DriveBaseDriver(MadCatzV1Joystick left, MadCatzV1Joystick right) {
+	public DriveBaseMadCatzV1MadCatzV1Driver(MadCatzV1Joystick left, MadCatzV1Joystick right) {
 		leftJoystick = left;
 		rightJoystick = right;
 		

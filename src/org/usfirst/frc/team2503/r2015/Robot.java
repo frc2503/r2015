@@ -11,12 +11,12 @@ import org.usfirst.frc.team2503.r2015.network.clients.PiClient;
 import org.usfirst.frc.team2503.r2015.network.clients.StatusClient;
 import org.usfirst.frc.team2503.r2015.network.clients.VisionClient;
 import org.usfirst.frc.team2503.r2015.robot.ClampStatus;
-import org.usfirst.frc.team2503.r2015.robot.DriveBaseMadCatzV1MadCatzV1DriveBaseDriver;
+import org.usfirst.frc.team2503.r2015.robot.DriveBaseMadCatzV1MadCatzV1Driver;
 import org.usfirst.frc.team2503.r2015.robot.controllers.MasterLightsController;
 import org.usfirst.frc.team2503.r2015.robot.controllers.MasterLightsController.MasterLightsControllerStatus;
 
 public class Robot extends IterativeRobot implements Statusable {
-	public DriveBaseMadCatzV1MadCatzV1DriveBaseDriver madCatzDriveBaseDriver;
+	public DriveBaseMadCatzV1MadCatzV1Driver madCatzDriveBaseDriver;
 	public DriverStation driverStation;
 	public JSONObject __status__ = new JSONObject();
 
@@ -122,7 +122,7 @@ public class Robot extends IterativeRobot implements Statusable {
 	public Robot() {
 		StatusClient.statusController.addStatusable("robot", this);
 	
-		madCatzDriveBaseDriver = new DriveBaseMadCatzV1MadCatzV1DriveBaseDriver(new MadCatzV1Joystick(ControlPort.LEFT_PRIMARY), new MadCatzV1Joystick(ControlPort.RIGHT_PRIMARY));
+		madCatzDriveBaseDriver = new DriveBaseMadCatzV1MadCatzV1Driver(new MadCatzV1Joystick(ControlPort.LEFT_PRIMARY), new MadCatzV1Joystick(ControlPort.RIGHT_PRIMARY));
 		driverStation = DriverStation.getInstance();
 		
 		pwm = new AnalogInput(3);
