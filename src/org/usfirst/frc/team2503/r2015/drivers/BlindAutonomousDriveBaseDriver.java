@@ -6,10 +6,21 @@ import org.usfirst.frc.team2503.r2015.robot.DriveBase;
 
 import edu.wpi.first.wpilibj.Timer;
 
+/**
+ * Public: A human-less Driver that doesn't really care about sensor inputs.
+ * 
+ * driveBase - The Robot's DriveBase.  This is passed in through the
+ *             constructor.
+ * schedule  - The Autonomous Schedule.  This is passed and set via
+ *             setSchedule();
+ *             
+ * startTime - The time at which the schedule was to've been started.
+ * 
+ * @author Kristofer Rye
+ */
 public class BlindAutonomousDriveBaseDriver implements Driver {
 	
 	public DriveBase driveBase;
-	public HashMap<String, Object> values;
 	public HashMap<double[], BlindAutonomousScheduleItem> schedule;
 	
 	private double startTime;
