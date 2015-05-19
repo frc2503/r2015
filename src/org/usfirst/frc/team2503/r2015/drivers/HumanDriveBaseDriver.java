@@ -15,6 +15,18 @@ public class HumanDriveBaseDriver implements Driver {
 	public DriveBase driveBase;
 	public DriveBaseControlLayout controlLayout;
 	
+	public void init() {
+		
+	}
+	
+	public void start() {
+		
+	}
+	
+	public void reset() {
+		
+	}
+	
 	public void tick() {
 		@SuppressWarnings("unchecked")
 		HashMap<String, Object> values = (HashMap<String, Object>)controlLayout.get();
@@ -37,6 +49,10 @@ public class HumanDriveBaseDriver implements Driver {
 			
 			driveBase.updateLights(masterLightsControllerStatus);
 		}
+	}
+	
+	public void stop() {
+		
 	}
 	
 	public HumanDriveBaseDriver(DriveBase driveBase, DriveBaseControlLayout controlLayout) {

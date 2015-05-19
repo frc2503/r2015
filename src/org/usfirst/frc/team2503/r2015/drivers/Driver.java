@@ -10,6 +10,10 @@ package org.usfirst.frc.team2503.r2015.drivers;
  */
 public interface Driver {
 	
+	public void init();
+	public void start();
+	public void reset();
 	public void tick();
+	public void stop();
 	
 }
