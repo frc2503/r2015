@@ -35,7 +35,7 @@ public class Robot extends IterativeRobot {
 
 	public void autonomousInit() {
 		HashMap<double[], BlindAutonomousScheduleItem> schedule = new HashMap<double[], BlindAutonomousScheduleItem>();
-		
+
 		BlindAutonomousScheduleItem driveBaseTurnRightHalfItem = (double time) -> { driveBase.drive(0.5, 0.0); };
 		BlindAutonomousScheduleItem driveBaseTurnLeftHalfItem = (double time) -> { driveBase.drive(0.0, -0.5); };
 		

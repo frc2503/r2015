@@ -2,9 +2,6 @@ package org.usfirst.frc.team2503.r2015.drivers;
 
 import java.util.HashMap;
 
-import org.json.JSONObject;
-import org.usfirst.frc.team2503.r2015.Constants;
-import org.usfirst.frc.team2503.r2015.controls.ControlLayout;
 import org.usfirst.frc.team2503.r2015.controls.DriveBaseControlLayout;
 import org.usfirst.frc.team2503.r2015.robot.ClampStatus;
 import org.usfirst.frc.team2503.r2015.robot.DriveBase;

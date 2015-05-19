@@ -1,11 +1,8 @@
 package org.usfirst.frc.team2503.r2015.drivers;
 
-import java.util.Comparator;
 import java.util.HashMap;
 
-import org.usfirst.frc.team2503.r2015.robot.ClampStatus;
 import org.usfirst.frc.team2503.r2015.robot.DriveBase;
-import org.usfirst.frc.team2503.r2015.robot.lights.MasterLightsController.MasterLightsControllerStatus;
 
 import edu.wpi.first.wpilibj.Timer;
 
@@ -39,33 +36,8 @@ public class BlindAutonomousDriveBaseDriver implements Driver {
 			if(array[0] <= timeSinceStart && array[1] > timeSinceStart) {
 				this.schedule.get(array).run(timeSinceStart);
 			} else {
-				System.out.println("Time " + timeSinceStart + " is out of array " + array + "; skipping.");
+				System.out.println("Time " + timeSinceStart + " is out of array " + array + " for item " + this.schedule.get(array) + "; skipping.");
 			}
-		}
-			
-		{
-			driveBase.drive(0.5, 0.0);
-				
-			Timer.delay(1.75);
-		}
-			
-		{
-			driveBase.winch(0.0);	
-			driveBase.drive(0.0, 0.0);
-			
-			Timer.delay(0.1);
-		}
-			
-		{
-			driveBase.drive(0.5, -0.5);
-				
-			Timer.delay(1.9);
-		}
-
-		{
-			driveBase.drive(0.0, 0.0);
-			driveBase.winch(0.0);
-			driveBase.masterLightsController.set(MasterLightsControllerStatus.ALL_SLOW_STROBE);
 		}
 	}
 	
