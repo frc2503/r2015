@@ -13,14 +13,12 @@ public class LimitedTalon extends Talon implements LimitedSpeedController {
 	public void setTarget(double targetOutput) {
 		if(targetOutput < 0.0) {
 			if(lowerLimitSwitch.isActivated()) {
-				System.out.println("Trying to lower past lower, switch active.");
 				set(0.0);
 			} else if(!lowerLimitSwitch.isActivated()) {
 				set(targetOutput);
 			}
 		} else if(targetOutput > 0.0) {
 			if(upperLimitSwitch.isActivated()) {
-				System.out.println("Trying to raise past upper, switch active.");
 				set(0.0);
 			} else if(!upperLimitSwitch.isActivated()) {
 				set(targetOutput);

@@ -43,8 +43,6 @@ public class DriveBaseMadCatzV1MadCatzV1ControlLayout implements DriveBaseContro
 			
 			double winchDesire = (winchPov >= 0 ? Math.sin(((winchPov + 90) * Math.PI) / 180.0) : 0.0);
 		
-			System.out.println(winchPov + ", " + winchDesire);
-			
 			values.put("winch", winchDesire);
 		}
 		

@@ -46,8 +46,6 @@ public class BlindAutonomousDriveBaseDriver implements Driver {
 		for(double[] array : this.schedule.keySet()) {
 			if(array[0] <= timeSinceStart && array[1] > timeSinceStart) {
 				this.schedule.get(array).run(timeSinceStart);
-			} else {
-				System.out.println("Time " + timeSinceStart + " is out of array " + array + " for item " + this.schedule.get(array) + "; skipping.");
 			}
 		}
 	}
