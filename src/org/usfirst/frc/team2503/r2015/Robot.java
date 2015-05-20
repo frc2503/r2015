@@ -23,6 +23,9 @@ public class Robot extends IterativeRobot {
 	public BlindAutonomousDriveBaseDriver autonomousDriver;
 	public HumanDriveBaseDriver teleopDriver;
 	
+	public Encoder leftEncoder;
+	public Encoder rightEncoder;
+	
 	public void robotInit() {
 	}
 
@@ -76,10 +79,15 @@ public class Robot extends IterativeRobot {
 	
 	public void teleopInit() {
 		teleopDriver.start();
+		leftEncoder.reset();
+		rightEncoder.reset();
 	}
 	
 	public void teleopPeriodic() {
 		teleopDriver.tick();
+		
+		System.out.println("left " + leftEncoder.get());
+		System.out.println("right " + rightEncoder.get());
 	}
 	
 	public void testInit() {
@@ -100,6 +108,10 @@ public class Robot extends IterativeRobot {
 		System.out.println("teleopDriver" + teleopDriver);
 		System.out.println("driverStation" + driverStation);
 		
+		leftEncoder = new Encoder(Constants.leftEncoderDioAChannel, Constants.leftEncoderDioBChannel);
+		rightEncoder = new Encoder(Constants.rightEncoderDioAChannel, Constants.rightEncoderDioBChannel);
 		
+		leftEncoder.reset();
+		rightEncoder.reset();
 	}
 }

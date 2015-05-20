@@ -3,7 +3,12 @@ package org.usfirst.frc.team2503.r2015;
 public class Constants {
 	public static final int leftTalonPort = 0;
 	public static final int rightTalonPort = 1;
-	public static final int winchTalonPort = 4;
+	public static final int winchTalonPort = 2;
+	
+	public static final int leftEncoderDioAChannel = 8;
+	public static final int leftEncoderDioBChannel = 9;
+	public static final int rightEncoderDioAChannel = 6;
+	public static final int rightEncoderDioBChannel = 7;
 	
 	public static final int upperLightsRelayPort = 0;
 	public static final int upperChannelLightsRelayPort = 1;
