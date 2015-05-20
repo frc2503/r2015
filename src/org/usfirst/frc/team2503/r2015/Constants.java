@@ -22,7 +22,7 @@ public class Constants {
 	
 	public static final double drivePrecisionMultiplier = 0.3;
 	public static final double masterPowerMultiplier = 1.0;
-	public static final double powerMultiplier = 0.7;
+	public static final double powerMultiplier = 1.0;
 	
 	public static final String piBaseUrl = "http://192.168.1.103:5800";
 	public static final String piWebUrl = piBaseUrl + "/web";
