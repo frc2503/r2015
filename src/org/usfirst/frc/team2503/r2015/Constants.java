@@ -60,6 +60,7 @@ public class Constants {
 	public static final boolean AUTONOMOUS_HAVE_VISION_DONE_YET = false;
 	public static final boolean AUTONOMOUS_HAVE_CAMERA = false;
 	
-	public static TeleopControlLayout teleopControlLayout = TeleopControlLayout.DRIVE_BASE_MADCATZ_V1_JOYSTICK_MADCATZ_V1_JOYSTICK_CONTROL_LAYOUT;
+	//public static TeleopControlLayout teleopControlLayout = TeleopControlLayout.DRIVE_BASE_MADCATZ_V1_JOYSTICK_MADCATZ_V1_JOYSTICK_CONTROL_LAYOUT;
+	public static TeleopControlLayout teleopControlLayout = TeleopControlLayout.DRIVE_BASE_LOGITECH_F310_GAMEPAD_CONTROL_LAYOUT;
 	
 }
