@@ -7,12 +7,12 @@ import org.usfirst.frc.team2503.r2015.controls.joysticks.MadCatzV1Joystick;
 import org.usfirst.frc.team2503.r2015.robot.ClampStatus;
 import org.usfirst.frc.team2503.r2015.robot.lights.MasterLightsController.MasterLightsControllerStatus;
 
-public class DriveBaseMadCatzV1MadCatzV1ControlLayout implements DriveBaseControlLayout {
+public class DriveBaseMadCatzV1JoystickMadCatzV1JoystickControlLayout implements DriveBaseControlLayout {
 
 	public MadCatzV1Joystick left;
 	public MadCatzV1Joystick right;
 
-	public static final String name = "DriveBaseMadCatzV1MadCatzV1ControlLayout";
+	public static final String name = "DriveBaseMadCatzV1JoystickMadCatzV1JoystickControlLayout";
 	
 	public final String getName() {
 		return name;
@@ -65,7 +65,7 @@ public class DriveBaseMadCatzV1MadCatzV1ControlLayout implements DriveBaseContro
 		return values;
 	}
 	
-	public DriveBaseMadCatzV1MadCatzV1ControlLayout(MadCatzV1Joystick left, MadCatzV1Joystick right) {
+	public DriveBaseMadCatzV1JoystickMadCatzV1JoystickControlLayout(MadCatzV1Joystick left, MadCatzV1Joystick right) {
 		this.left = left;
 		this.right = right;
 	}

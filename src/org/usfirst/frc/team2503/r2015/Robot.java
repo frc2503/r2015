@@ -7,7 +7,10 @@ import edu.wpi.first.wpilibj.*;
 
 import org.usfirst.frc.team2503.r2015.controls.ControlLayout;
 import org.usfirst.frc.team2503.r2015.controls.ControlPort;
-import org.usfirst.frc.team2503.r2015.controls.DriveBaseMadCatzV1MadCatzV1ControlLayout;
+import org.usfirst.frc.team2503.r2015.controls.DriveBaseControlLayout;
+import org.usfirst.frc.team2503.r2015.controls.DriveBaseLogitechF310GamepadControlLayout;
+import org.usfirst.frc.team2503.r2015.controls.DriveBaseMadCatzV1JoystickMadCatzV1JoystickControlLayout;
+import org.usfirst.frc.team2503.r2015.controls.gamepads.LogitechF310Gamepad;
 import org.usfirst.frc.team2503.r2015.controls.joysticks.MadCatzV1Joystick;
 import org.usfirst.frc.team2503.r2015.drivers.BlindAutonomousDriveBaseDriver;
 import org.usfirst.frc.team2503.r2015.drivers.BlindAutonomousScheduleItem;
@@ -101,7 +104,30 @@ public class Robot extends IterativeRobot {
 		driveBase = new DriveBase();
 
 		autonomousDriver = new BlindAutonomousDriveBaseDriver(driveBase);
-		teleopDriver = new HumanDriveBaseDriver(driveBase, new DriveBaseMadCatzV1MadCatzV1ControlLayout(new MadCatzV1Joystick(ControlPort.LEFT_PRIMARY), new MadCatzV1Joystick(ControlPort.RIGHT_PRIMARY)));
+		
+		switch(Constants.teleopControlLayout) {
+		case DRIVE_BASE_MADCATZ_V1_JOYSTICK_MADCATZ_V1_JOYSTICK_CONTROL_LAYOUT:
+			teleopDriver = new HumanDriveBaseDriver(driveBase, new DriveBaseMadCatzV1JoystickMadCatzV1JoystickControlLayout(new MadCatzV1Joystick(ControlPort.LEFT_PRIMARY), new MadCatzV1Joystick(ControlPort.RIGHT_PRIMARY)));
+			
+			System.out.println("controlLayout == " + teleopDriver.controlLayout.getName());
+
+			break;
+			
+		case DRIVE_BASE_LOGITECH_F310_GAMEPAD_CONTROL_LAYOUT:
+			teleopDriver = new HumanDriveBaseDriver(driveBase, new DriveBaseLogitechF310GamepadControlLayout(new LogitechF310Gamepad(ControlPort.LEFT_TERTIARY)));
+
+			System.out.println("controlLayout == " + teleopDriver.controlLayout.getName());
+
+			break;
+			
+		default:
+			teleopDriver = new HumanDriveBaseDriver(driveBase, new DriveBaseMadCatzV1JoystickMadCatzV1JoystickControlLayout(new MadCatzV1Joystick(ControlPort.LEFT_PRIMARY), new MadCatzV1Joystick(ControlPort.RIGHT_PRIMARY)));			
+
+			System.out.println("defaulting; controlLayout == " + teleopDriver.controlLayout.getName());
+			
+			break;
+		}
+		
 		driverStation = DriverStation.getInstance();
 		
 		System.out.println("autonomousDriver" + autonomousDriver);

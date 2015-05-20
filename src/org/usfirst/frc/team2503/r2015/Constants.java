@@ -1,6 +1,24 @@
 package org.usfirst.frc.team2503.r2015;
 
 public class Constants {
+	
+	public enum TeleopControlLayout {
+		
+		DRIVE_BASE_MADCATZ_V1_JOYSTICK_MADCATZ_V1_JOYSTICK_CONTROL_LAYOUT(0),
+		DRIVE_BASE_LOGITECH_F310_GAMEPAD_CONTROL_LAYOUT(1);
+		
+		private int number;
+		
+		public int getValue() {
+			return this.number;
+		}
+		
+		private TeleopControlLayout(int number) {
+			this.number = number;
+		}
+		
+	}
+	
 	public static final int leftTalonPort = 0;
 	public static final int rightTalonPort = 1;
 	public static final int winchTalonPort = 2;
@@ -41,5 +59,7 @@ public class Constants {
 	public static final boolean AUTONOMOUS_USE_SYNCHRONOUS = true;
 	public static final boolean AUTONOMOUS_HAVE_VISION_DONE_YET = false;
 	public static final boolean AUTONOMOUS_HAVE_CAMERA = false;
+	
+	public static TeleopControlLayout teleopControlLayout = TeleopControlLayout.DRIVE_BASE_MADCATZ_V1_JOYSTICK_MADCATZ_V1_JOYSTICK_CONTROL_LAYOUT;
 	
 }
