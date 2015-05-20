@@ -26,9 +26,6 @@ public class Robot extends IterativeRobot {
 	public BlindAutonomousDriveBaseDriver autonomousDriver;
 	public HumanDriveBaseDriver teleopDriver;
 	
-	public Encoder leftEncoder;
-	public Encoder rightEncoder;
-	
 	public void robotInit() {
 	}
 
@@ -82,15 +79,10 @@ public class Robot extends IterativeRobot {
 	
 	public void teleopInit() {
 		teleopDriver.start();
-		leftEncoder.reset();
-		rightEncoder.reset();
 	}
 	
 	public void teleopPeriodic() {
 		teleopDriver.tick();
-		
-		System.out.println("left " + leftEncoder.get());
-		System.out.println("right " + rightEncoder.get());
 	}
 	
 	public void testInit() {
@@ -114,7 +106,7 @@ public class Robot extends IterativeRobot {
 			break;
 			
 		case DRIVE_BASE_LOGITECH_F310_GAMEPAD_CONTROL_LAYOUT:
-			teleopDriver = new HumanDriveBaseDriver(driveBase, new DriveBaseLogitechF310GamepadControlLayout(new LogitechF310Gamepad(ControlPort.LEFT_TERTIARY)));
+			teleopDriver = new HumanDriveBaseDriver(driveBase, new DriveBaseLogitechF310GamepadControlLayout(new LogitechF310Gamepad(ControlPort.LEFT_SECONDARY)));
 
 			System.out.println("controlLayout == " + teleopDriver.controlLayout.getName());
 
@@ -134,10 +126,5 @@ public class Robot extends IterativeRobot {
 		System.out.println("teleopDriver" + teleopDriver);
 		System.out.println("driverStation" + driverStation);
 		
-		leftEncoder = new Encoder(Constants.leftEncoderDioAChannel, Constants.leftEncoderDioBChannel);
-		rightEncoder = new Encoder(Constants.rightEncoderDioAChannel, Constants.rightEncoderDioBChannel);
-		
-		leftEncoder.reset();
-		rightEncoder.reset();
 	}
 }

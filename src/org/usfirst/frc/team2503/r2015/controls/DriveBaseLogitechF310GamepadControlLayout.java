@@ -3,6 +3,7 @@ package org.usfirst.frc.team2503.r2015.controls;
 import java.util.HashMap;
 
 import org.usfirst.frc.team2503.r2015.Constants;
+import org.usfirst.frc.team2503.r2015.Maths;
 import org.usfirst.frc.team2503.r2015.controls.gamepads.LogitechF310Gamepad;
 import org.usfirst.frc.team2503.r2015.robot.ClampStatus;
 import org.usfirst.frc.team2503.r2015.robot.lights.MasterLightsController.MasterLightsControllerStatus;
@@ -11,7 +12,7 @@ public class DriveBaseLogitechF310GamepadControlLayout implements DriveBaseContr
 
 	public LogitechF310Gamepad gamepad;
 
-	public static final String name = "DriveBaseMadCatzV1JoystickMadCatzV1JoystickControlLayout";
+	public static final String name = "DriveBaseLogitechF310GamepadControlLayout";
 	
 	public final String getName() {
 		return name;
@@ -24,8 +25,8 @@ public class DriveBaseLogitechF310GamepadControlLayout implements DriveBaseContr
 			boolean precision = gamepad.getLeftStickButton() && gamepad.getRightStickButton();
 			double multiplier = (precision ? 0.4 : 1.0) * Constants.powerMultiplier;
 	
-			double leftAxisValue = gamepad.getLeftBackForwardAxisValue();
-			double rightAxisValue = gamepad.getRightForwardBackAxisValue();
+			double leftAxisValue = Maths.squareInput(gamepad.getLeftBackForwardAxisValue());
+			double rightAxisValue = Maths.squareInput(gamepad.getRightForwardBackAxisValue());
 			
 			double leftValue = ((leftAxisValue * Math.abs(leftAxisValue)) + leftAxisValue) / 2.0;
 			double rightValue = ((rightAxisValue * Math.abs(rightAxisValue)) + rightAxisValue) / 2.0;
@@ -38,9 +39,7 @@ public class DriveBaseLogitechF310GamepadControlLayout implements DriveBaseContr
 		}
 		
 		{
-			int winchPov = gamepad.getPov();
-			
-			double winchDesire = (winchPov >= 0 ? Math.sin(((winchPov + 90) * Math.PI) / 180.0) : 0.0);
+			double winchDesire = gamepad.getRightTriggerUnpressedPressedAxisValue() - gamepad.getLeftTriggerUnpressedPressedAxisValue();
 		
 			values.put("winch", winchDesire);
 		}
