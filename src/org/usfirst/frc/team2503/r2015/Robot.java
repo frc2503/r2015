@@ -72,25 +72,35 @@ public class Robot extends IterativeRobot {
 	 * @author Kristofer Rye
 	 */
 	public void autonomousInit() {
+		/**
+		 * The BlindAutonomous schedule.
+		 */
 		HashMap<double[], BlindAutonomousScheduleItem> schedule = new HashMap<double[], BlindAutonomousScheduleItem>();
 
 		BlindAutonomousScheduleItem driveBaseTurnRightHalfItem = (double time) -> { driveBase.drive(0.5, 0.0); };
 		BlindAutonomousScheduleItem driveBaseTurnLeftHalfItem = (double time) -> { driveBase.drive(0.0, -0.5); };
-		
+
 		BlindAutonomousScheduleItem driveBaseStopItem = (double time) -> { driveBase.drive(0.0, 0.0); };
 		BlindAutonomousScheduleItem driveBaseDriveForwardHalfItem = (double time) -> { driveBase.drive(0.5, -0.5); };
 		BlindAutonomousScheduleItem driveBaseDriveBackwardHalfItem = (double time) -> { driveBase.drive(0.5, -0.5); };
-		
+
 		BlindAutonomousScheduleItem clampOpenItem = (double time) -> { driveBase.clamp.set(ClampStatus.OPEN); };
 		BlindAutonomousScheduleItem clampCloseItem = (double time) -> { driveBase.clamp.set(ClampStatus.CLOSE); };
-		
+
 		BlindAutonomousScheduleItem winchUpFourFifthsItem = (double time) -> { driveBase.winch(0.8); };
 		BlindAutonomousScheduleItem winchStopItem = (double time) -> { driveBase.winch(0.0); };
 		BlindAutonomousScheduleItem winchDownFourFifthsItem = (double time) -> { driveBase.winch(-0.8); };
-		
+
 		BlindAutonomousScheduleItem lightsAllOnItem = (double time) -> { driveBase.masterLightsController.set(MasterLightsControllerStatus.ALL_ON); };
 		BlindAutonomousScheduleItem lightsAllSlowStrobeItem = (double time) -> { driveBase.masterLightsController.set(MasterLightsControllerStatus.ALL_SLOW_STROBE); };
-		
+
+		/**
+		 * Construct the schedule.
+		 *
+		 * This code should result in the autonomous that we ran at LSR.
+		 *
+		 * @author Kristofer Rye
+		 */
 		schedule.put(new double[] {0.0, Double.POSITIVE_INFINITY}, clampCloseItem);
 		schedule.put(new double[] {0.0, 12.25}, lightsAllOnItem);
 		schedule.put(new double[] {0.0, 6.5}, driveBaseStopItem);
@@ -107,7 +117,7 @@ public class Robot extends IterativeRobot {
 		autonomousDriver.setSchedule(schedule);
 		autonomousDriver.start();
 	}
-	
+
 	/**
 	 * This function is called periodically during autonomous mode.
 	 *
@@ -116,7 +126,7 @@ public class Robot extends IterativeRobot {
 	public void autonomousPeriodic() {
 		autonomousDriver.tick();
 	}
-	
+
 	/**
 	 * This function is called when the robot is entering operator control ("teleop") mode.
 	 *
@@ -125,7 +135,7 @@ public class Robot extends IterativeRobot {
 	public void teleopInit() {
 		teleopDriver.start();
 	}
-	
+
 	/**
 	 * This function is called periodically during operator control ("teleop") mode.
 	 *
@@ -139,10 +149,10 @@ public class Robot extends IterativeRobot {
 	 * This function is called when the robot is entering test mode.
 	 *
 	 * @author Kristofer Rye
-	 */	
+	 */
 	public void testInit() {
 	}
-	
+
 	/**
 	 * This function is called periodically during test mode.
 	 *
@@ -163,35 +173,35 @@ public class Robot extends IterativeRobot {
 		driveBase = new DriveBase();
 
 		autonomousDriver = new BlindAutonomousDriveBaseDriver(driveBase);
-		
+
 		switch(Constants.teleopControlLayout) {
 		case DRIVE_BASE_MADCATZ_V1_JOYSTICK_MADCATZ_V1_JOYSTICK_CONTROL_LAYOUT:
 			teleopDriver = new HumanDriveBaseDriver(driveBase, new DriveBaseMadCatzV1JoystickMadCatzV1JoystickControlLayout(new MadCatzV1Joystick(ControlPort.LEFT_PRIMARY), new MadCatzV1Joystick(ControlPort.RIGHT_PRIMARY)));
-			
+
 			System.out.println("controlLayout == " + teleopDriver.controlLayout.getName());
 
 			break;
-			
+
 		case DRIVE_BASE_LOGITECH_F310_GAMEPAD_CONTROL_LAYOUT:
 			teleopDriver = new HumanDriveBaseDriver(driveBase, new DriveBaseLogitechF310GamepadControlLayout(new LogitechF310Gamepad(ControlPort.LEFT_SECONDARY)));
 
 			System.out.println("controlLayout == " + teleopDriver.controlLayout.getName());
 
 			break;
-			
+
 		default:
-			teleopDriver = new HumanDriveBaseDriver(driveBase, new DriveBaseMadCatzV1JoystickMadCatzV1JoystickControlLayout(new MadCatzV1Joystick(ControlPort.LEFT_PRIMARY), new MadCatzV1Joystick(ControlPort.RIGHT_PRIMARY)));			
+			teleopDriver = new HumanDriveBaseDriver(driveBase, new DriveBaseMadCatzV1JoystickMadCatzV1JoystickControlLayout(new MadCatzV1Joystick(ControlPort.LEFT_PRIMARY), new MadCatzV1Joystick(ControlPort.RIGHT_PRIMARY)));
 
 			System.out.println("defaulting; controlLayout == " + teleopDriver.controlLayout.getName());
-			
+
 			break;
 		}
-		
+
 		driverStation = DriverStation.getInstance();
-		
+
 		System.out.println("autonomousDriver" + autonomousDriver);
 		System.out.println("teleopDriver" + teleopDriver);
 		System.out.println("driverStation" + driverStation);
-		
+
 	}
 }
