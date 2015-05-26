@@ -30,9 +30,10 @@ import org.usfirst.frc.team2503.r2015.robot.lights.MasterLightsController.Master
  * @author Kristofer Rye
  */
 public class Robot extends IterativeRobot {
-	
-	public DriverStation driverStation;
+
 	public DriveBase driveBase;
+	public DriverStation driverStation;
+
 	public BlindAutonomousDriveBaseDriver autonomousDriver;
 	public HumanDriveBaseDriver teleopDriver;
 
