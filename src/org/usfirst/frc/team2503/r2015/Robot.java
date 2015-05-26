@@ -20,22 +20,56 @@ import org.usfirst.frc.team2503.r2015.robot.ClampStatus;
 import org.usfirst.frc.team2503.r2015.robot.DriveBase;
 import org.usfirst.frc.team2503.r2015.robot.lights.MasterLightsController.MasterLightsControllerStatus;
 
+/**
+ * The VM is configured to automatically run this class, and to call the
+ * functions corresponding to each mode, as described in the IterativeRobot
+ * documentation. If you change the name of this class or the package after
+ * creating this project, you must also update the manifest file in the resource
+ * directory.
+ *
+ * @author Kristofer Rye
+ */
 public class Robot extends IterativeRobot {
+	
 	public DriverStation driverStation;
 	public DriveBase driveBase;
 	public BlindAutonomousDriveBaseDriver autonomousDriver;
 	public HumanDriveBaseDriver teleopDriver;
-	
+
+	/**
+	 * This function is run when the robot is first started up and should be
+	 * used for any post-construction initialization code.
+	 *
+	 * @author Kristofer Rye
+	 */
 	public void robotInit() {
 	}
 
+	/**
+	 * This function is called when the robot is entering disabled mode.
+	 *
+	 * @author Kristofer Rye
+	 */
 	public void disabledInit() {
 	}
 
+	/**
+	 * This function is called periodically during disabled mode.
+	 *
+	 * Note that any motor or relay control done while the robot is disabled
+	 * will not result in any output by the RoboRIO; the RoboRIO itself will
+	 * not send any output during this time period.
+	 *
+	 * @author Kristofer Rye
+	 */
 	public void disabledPeriodic() {
-		
 	}
 
+	/**
+	 * This function is called when the robot is entering autonomous mode.
+	 *
+	 * @author Kristofer Rye
+	 */
 	public void autonomousInit() {
 		HashMap<double[], BlindAutonomousScheduleItem> schedule = new HashMap<double[], BlindAutonomousScheduleItem>();
 
@@ -73,25 +107,57 @@ public class Robot extends IterativeRobot {
 		autonomousDriver.start();
 	}
 	
+	/**
+	 * This function is called periodically during autonomous mode.
+	 *
+	 * @author Kristofer Rye
+	 */
 	public void autonomousPeriodic() {
 		autonomousDriver.tick();
 	}
 	
+	/**
+	 * This function is called when the robot is entering operator control ("teleop") mode.
+	 *
+	 * @author Kristofer Rye
+	 */
 	public void teleopInit() {
 		teleopDriver.start();
 	}
 	
+	/**
+	 * This function is called periodically during operator control ("teleop") mode.
+	 *
+	 * @author Kristofer Rye
+	 */
 	public void teleopPeriodic() {
 		teleopDriver.tick();
 	}
-	
+
+	/**
+	 * This function is called when the robot is entering test mode.
+	 *
+	 * @author Kristofer Rye
+	 */	
 	public void testInit() {
 	}
 	
+	/**
+	 * This function is called periodically during test mode.
+	 *
+	 * @author Kristofer Rye
+	 */
 	public void testPeriodic() {
 		driveBase.masterLightsController.set(MasterLightsControllerStatus.ALL_SLOW_CYCLE);
 	}
-	
+
+	/**
+	 * This is the constructor for the Robot class, which is called when the robot program starts up.
+	 *
+	 * Use this method to instantiate any variables.
+	 *
+	 * @author Kristofer Rye
+	 */
 	public Robot() {
 		driveBase = new DriveBase();
 
