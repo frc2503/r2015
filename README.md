@@ -25,6 +25,11 @@ The above command will use Git (provided that everything is set up properly) to 
 
 From Eclipse, you can then import the project as an "Existing Project" in the "Filesystem", and you're set to go.
 
+To get your code into the `master` branch, first create a branch, commit to that branch, and create a Pull Request.
+If this Pull Request is in response to an Issue, then reference that like "resolves #<number>", so that GitHub will automagically close that Issue with the Pull Request, once it's merged.
+
+You can, of course, commit directly to `master`, but generally it clutters things and makes things more confusing.
+
 ## Programming
 
 In general, try to keep your code as neat as possible.
