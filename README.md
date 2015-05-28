@@ -26,3 +26,11 @@ The above command will use Git (provided that everything is set up properly) to 
 From Eclipse, you can then import the project as an "Existing Project" in the "Filesystem", and you're set to go.
 
 ## Programming
+
+In general, try to keep your code as neat as possible.
+Don't focus on getting the results, then stopping; constantly iterate on your design.
+If you can, make it dynamic.
+Handle all potential Exceptions, and make things both bulletproof and intelligent.
+*This* is what leads you to having a competitive program.
+
+[FRC Control System]: https://wpilib.screenstepslive.com/s/4485
