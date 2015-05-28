@@ -32,9 +32,12 @@ You can, of course, commit directly to `master`, but generally it clutters thing
 
 ## Programming
 
-In general, try to keep your code as neat as possible.
-Don't focus on getting the results, then stopping; constantly iterate on your design.
-If you can, make it dynamic.
+In general, try to keep your code as neat, expandable, and functional as possible.
+Don't focus on getting copious results, then stopping work; constantly iterate on your design.
+
+### Coding Style
+
+If you can, make stuff dynamic.
 Handle all potential Exceptions, and make things both bulletproof and intelligent.
 *This* is what leads you to having a competitive program.
 
