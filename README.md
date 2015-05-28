@@ -59,3 +59,9 @@ That said, feel free to break the coding style while you're getting something fu
 It's important to work out functionality&mdash;then, you can go back and clean up your code before committing and pushing.
 
 [FRC Control System]: https://wpilib.screenstepslive.com/s/4485
+
+### Deploying
+
+If you're on the same network as the robot&mdash;be that by being connected to its wireless network in the shop, or by being tethered via Ethernet&mdash;, and you can connect to it (You can see this by opening the driver station on your computer and seeing if you have "Communications"), you should be able to deploy to it.
+In Eclipse, just press Ctrl+F11, or click "Run > Run," and select the "WPIlib Robot Deployment" option.
+Eclipse will do stuff automagically for you.
