@@ -35,6 +35,13 @@ You can, of course, commit directly to `master`, but generally it clutters thing
 In general, try to keep your code as neat, expandable, and functional as possible.
 Don't focus on getting copious results, then stopping work; constantly iterate on your design.
 
+### Commit Regularity
+
+Commit often, but not anally-so.
+Once you've done some unit of work, commit it.
+Make your message reflect what it's about.
+Then push.
+
 ### Coding Style
 
 If you can, make stuff dynamic.
