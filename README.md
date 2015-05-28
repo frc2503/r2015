@@ -22,4 +22,7 @@ $ git clone https://github.com/frc2503/r2015.git r2015
 ```
 
 The above command will use Git (provided that everything is set up properly) to clone down the robot code into a folder (in the current directory) called `r2015`.
+
+From Eclipse, you can then import the project as an "Existing Project" in the "Filesystem", and you're set to go.
+
 ## Programming
