@@ -41,4 +41,14 @@ If you can, make stuff dynamic.
 Handle all potential Exceptions, and make things both bulletproof and intelligent.
 *This* is what leads you to having a competitive program.
 
+We use *a combination of spaces and tabs*; tabs are used for indentation, and spaces are used for alignment.
+This means that we have no desired tab width; you can use whatever you want, because everything will be aligned if it is styled properly.
+
+Favor descriptive&mdash;and, if necessary, longer&mdash;variable, class, interface, enum, and method names.
+Don't skimp out and use `x` or something nondescript like that, unless you're doing algebra or precompiling a graph with an x-axis or something like that.
+The variable `i` is okay for quick iteration through an Array or something like that, but it's still generally better to use dynamic things like Iterators for manipulating those, anyway.
+
+That said, feel free to break the coding style while you're getting something functional.
+It's important to work out functionality&mdash;then, you can go back and clean up your code before committing and pushing.
+
 [FRC Control System]: https://wpilib.screenstepslive.com/s/4485
