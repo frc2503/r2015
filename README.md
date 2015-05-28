@@ -65,3 +65,10 @@ It's important to work out functionality&mdash;then, you can go back and clean u
 If you're on the same network as the robot&mdash;be that by being connected to its wireless network in the shop, or by being tethered via Ethernet&mdash;, and you can connect to it (You can see this by opening the driver station on your computer and seeing if you have "Communications"), you should be able to deploy to it.
 In Eclipse, just press Ctrl+F11, or click "Run > Run," and select the "WPIlib Robot Deployment" option.
 Eclipse will do stuff automagically for you.
+
+### For the Advanced
+
+If you're feeling advanced, you can do stuff in different editors by using Apache Ant to compile the robot program.
+By default, this is how robot projects are, so it's not difficult.
+Just install Ant.
+Then, run `ant compile` to compile the robot program, and `ant deploy` to deploy it.
