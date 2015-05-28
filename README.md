@@ -8,4 +8,7 @@ This README is intended as a complicated set of instructions for this repository
 
 ## Contributing
 
+To contribute to this GitHub account, you must first have the code cloned on your workstation!
+If you have yet to install the FRC development suite, you can do this by following the [2015 FRC Control System][FRC Control System] steps.
+Since this robot program is written in Java, specifically follow the directions for "FRC Java Programming;" there isn't much need for the C++ or LabVIEW stuff since we don't use it.
 ## Programming
