@@ -3,3 +3,5 @@
 Our code for the 2015 season and following off-season.
 
 This code was run on our robot at the Lake Superior Regional and is currently being worked-on for reference and practice.
+
+This README is intended as a complicated set of instructions for this repository, which will likely apply to future robot code projects.
