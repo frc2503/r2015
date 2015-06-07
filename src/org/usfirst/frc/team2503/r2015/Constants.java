@@ -47,10 +47,9 @@ public class Constants {
 	public static final double masterPowerMultiplier = 1.0;
 	public static final double powerMultiplier = 1.0;
 	
-	public static final String piBaseUrl = "http://192.168.1.103:5800";
-	public static final String piWebUrl = piBaseUrl + "/web";
-	public static final String piVisionUrl = piBaseUrl + "/vision";
-	public static final String piStatusUrl = piBaseUrl + "/status?k=robot";
+	public static final String piBaseUrl = "192.168.43.9:5080";
+	public static final String piHttpBaseUrl = "http://" + piBaseUrl;
+	public static final String piWsBaseUrl = "ws://" + piBaseUrl;
 	public static final String piClientVersion = "0.0.0";
 	
 	public static final boolean PERMISSION_LIGHTS_CONTROL = true;
@@ -60,7 +59,7 @@ public class Constants {
 	public static final boolean AUTONOMOUS_HAVE_VISION_DONE_YET = false;
 	public static final boolean AUTONOMOUS_HAVE_CAMERA = false;
 	
-	//public static TeleopControlLayout teleopControlLayout = TeleopControlLayout.DRIVE_BASE_MADCATZ_V1_JOYSTICK_MADCATZ_V1_JOYSTICK_CONTROL_LAYOUT;
-	public static TeleopControlLayout teleopControlLayout = TeleopControlLayout.DRIVE_BASE_LOGITECH_F310_GAMEPAD_CONTROL_LAYOUT;
+	public static TeleopControlLayout teleopControlLayout = TeleopControlLayout.DRIVE_BASE_MADCATZ_V1_JOYSTICK_MADCATZ_V1_JOYSTICK_CONTROL_LAYOUT;
+	//public static TeleopControlLayout teleopControlLayout = TeleopControlLayout.DRIVE_BASE_LOGITECH_F310_GAMEPAD_CONTROL_LAYOUT;
 	
 }
