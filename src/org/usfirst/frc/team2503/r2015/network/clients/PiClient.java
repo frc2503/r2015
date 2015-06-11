@@ -8,6 +8,7 @@ import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.exceptions.WebsocketNotConnectedException;
 import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONObject;
+import org.usfirst.frc.team2503.r2015.Constants;
 
 public class PiClient extends WebSocketClient implements Runnable {
 	public PiClient(URI serverUri) {
@@ -46,50 +47,53 @@ public class PiClient extends WebSocketClient implements Runnable {
 	
 	public static void main(String[] args) {
 		PiClient piClient = null;
+		URI uri = null;
 		
 		try {
-			/**
-			 * Tell the JVM to GC the old piClient, since we probably don't want it.
-			 */
-			if(piClient != null) piClient = null;
-				
-			piClient = new PiClient(new URI("ws://localhost:5800/"));
-			piClient.connect();
-
-			while(!piClient.isOpen()) {
-				try {
-					if(piClient.isClosed()) {
-						System.exit(0);
-					}
-					System.out.println("[PiClient] Not open yet! (closed " + piClient.isClosed() + ")");
-
-					Thread.sleep(100);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-				
-			while(piClient.isOpen()) {
-				System.out.println("[PiClient] Sending keepalive");
-
-				JSONObject object = new JSONObject();
-				JSONObject message = new JSONObject();
-				message.put("type", "keepalive");
-				object.put("message", message);
-					
-				System.out.println("[PiClient] Sending " + object.toString());
-					
-				piClient.send(object.toString());
-					
-				try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-					break;
-				}
-			}
-		} catch (URISyntaxException e) {
+			uri = new URI(Constants.piWsBaseUrl);
+		} catch(URISyntaxException e) {
 			e.printStackTrace();
+			System.exit(1);
+		}
+		
+		/**
+		 * Tell the JVM to GC the old piClient, since we probably don't want it.
+		 */
+		//if(piClient != null) piClient = null;
+			
+		piClient = new PiClient(uri);
+		piClient.connect();
+
+		while(!piClient.isOpen()) {
+			try {
+				if(piClient.isClosed()) System.exit(0);
+				
+				System.out.println("[PiClient] Not open yet! (closed " + piClient.isClosed() + ")");
+
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+			
+		while(piClient.isOpen()) {
+			System.out.println("[PiClient] Sending keepalive");
+
+			JSONObject object = new JSONObject();
+			JSONObject message = new JSONObject();
+			message.put("type", "keepalive");
+			object.put("message", message);
+				
+			System.out.println("[PiClient] Sending " + object.toString());
+				
+			piClient.send(object.toString());
+				
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				break;
+			}
 		}
 	}
 }
