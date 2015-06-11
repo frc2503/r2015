@@ -49,6 +49,7 @@ public class PiClient extends WebSocketClient implements Runnable {
 		for(String key : newObjectKeySet) {
 			Object originalValue = originalObject.opt(key);
 			Object newValue = newObject.get(key);
+
 			switch(newValue.getClass().getName()) {
 			case "org.json.JSONObject":
 				if(originalValue != null) {
