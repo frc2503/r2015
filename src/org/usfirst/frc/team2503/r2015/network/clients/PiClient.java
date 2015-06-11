@@ -15,15 +15,15 @@ import org.usfirst.frc.team2503.r2015.Constants;
 
 public class PiClient extends WebSocketClient implements Runnable {
 	public UUID uuid;
-	
+
 	public JSONObject data;
-	
+
 	public PiClient(UUID uuid, URI serverUri) {
 		/**
 		 * Uses Draft_17 by default, which is the current standard.
 		 */
 		super(serverUri);
-		
+
 		this.uuid = uuid;
 		this.data = new JSONObject();
 	}
@@ -33,18 +33,18 @@ public class PiClient extends WebSocketClient implements Runnable {
 		 * Uses Draft_17 by default, which is the current standard.
 		 */
 		super(serverUri);
-		
+
 		this.uuid = UUID.randomUUID();
 		this.data = new JSONObject();
-		}
-	
+	}
+
 	public void onOpen(ServerHandshake handshakeData) {
 		System.out.println("[PiClient] Server handshake completed!");
 	}
-	
+
 	public JSONObject mergeJSONObjects(JSONObject originalObject, JSONObject newObject) {
 		JSONObject merged = new JSONObject(originalObject);
-		
+
 		Set<String> newObjectKeySet = newObject.keySet();
 		for(String key : newObjectKeySet) {
 			Object originalValue = originalObject.opt(key);
@@ -61,7 +61,7 @@ public class PiClient extends WebSocketClient implements Runnable {
 				merged.put(key, newObject.get(key));
 			}
 		}
-		
+
 		return merged;
 	}
 
@@ -74,7 +74,7 @@ public class PiClient extends WebSocketClient implements Runnable {
 			case "message":
 				System.out.println("[PiClient] Got message of type " + object.get("message_type") + ", \"" + object.get("message") + "\"" + object.get("detail"));
 				break;
-				
+
 			case "data":
 				System.out.println("[PiClient] Got data.");
 				System.out.println("[PiClient] Merging data with old data " + this.data.toString());
@@ -86,19 +86,19 @@ public class PiClient extends WebSocketClient implements Runnable {
 				for(String key : keys) {
 					pureJSONObject.put(key, object.get(key));
 				}
-				
+
 				this.data = this.mergeJSONObjects(this.data, pureJSONObject);
-		
+
 				System.out.println("[PiClient] New data " + this.data.toString());
 				break;
-				
+
 			case "version":
 				break;
 			}
 		} else {
 			System.err.println("[PiClient] Message " + object.toString() + " has no type!");
 		}
-		
+
 		System.out.println("[PiClient] Message as JSON: " + object);
 	}
 
@@ -109,11 +109,11 @@ public class PiClient extends WebSocketClient implements Runnable {
 	public void onError(Exception exception) {
 		exception.printStackTrace();
 	}
-	
+
 	public void send(JSONObject object) {
 		this.send(object.toString());
 	}
-	
+
 	public void sendData(JSONObject data) {
 		JSONObject object = new JSONObject();
 		object.put("type", "data");
@@ -122,18 +122,18 @@ public class PiClient extends WebSocketClient implements Runnable {
 		}
 		this.send(object);
 	}
-	
+
 	public void sendMessage(JSONObject message) {
 		JSONObject object = new JSONObject();
 		object.put("type", "message");
-		
+
 		for(String key : message.keySet()) {
 			object.put(key, message.get(key));
 		}
-		
+
 		this.send(object);
 	}
-	
+
 	public static void main(String[] args) {
 		PiClient piClient = null;
 		URI uri = null;
@@ -156,7 +156,7 @@ public class PiClient extends WebSocketClient implements Runnable {
 		while(!piClient.isOpen()) {
 			try {
 				if(piClient.isClosed()) System.exit(0);
-				
+
 				System.out.println("[PiClient] Not open yet! (closed " + piClient.isClosed() + ")");
 
 				Thread.sleep(100);
