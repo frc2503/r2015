@@ -58,8 +58,11 @@ public class PiClient extends WebSocketClient implements Runnable {
 
 			while(!piClient.isOpen()) {
 				try {
+					if(piClient.isClosed()) {
+						System.exit(0);
+					}
 					System.out.println("[PiClient] Not open yet! (closed " + piClient.isClosed() + ")");
-						
+
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
