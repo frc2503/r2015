@@ -145,11 +145,6 @@ public class PiClient extends WebSocketClient implements Runnable {
 			System.exit(1);
 		}
 
-		/**
-		 * Tell the JVM to GC the old piClient, since we probably don't want it.
-		 */
-		//if(piClient != null) piClient = null;
-
 		piClient = new PiClient(uri);
 		piClient.connect();
 
