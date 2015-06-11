@@ -47,7 +47,7 @@ public class Constants {
 	public static final double masterPowerMultiplier = 1.0;
 	public static final double powerMultiplier = 1.0;
 	
-	public static final String piBaseUrl = "192.168.43.9:5080";
+	public static final String piBaseUrl = "localhost:5800";
 	public static final String piHttpBaseUrl = "http://" + piBaseUrl;
 	public static final String piWsBaseUrl = "ws://" + piBaseUrl;
 	public static final String piClientVersion = "0.0.0";
