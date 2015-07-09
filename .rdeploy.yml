@@ -1,0 +1,13 @@
+deploy:
+  - "ant clean"
+  - "ant compile"
+  - "ant deploy"
+
+compile:
+  - "ant clean"
+  - "ant compile"
+
+test:
+  - "ant clean"
+  - "ant compile"
+  - "java -cp build/ org.usfirst.frc.team2503.r2015.Main"
