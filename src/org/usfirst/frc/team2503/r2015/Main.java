@@ -8,7 +8,5 @@ import org.java_websocket.client.WebSocketClient;
 
 public class Main {
 	public static void main(String[] args) {
-		URI uri = new URI("ws://localhost:5080/");
-		WebSocketClient wsc = new WebSocketClient(uri);
 	}
 }
