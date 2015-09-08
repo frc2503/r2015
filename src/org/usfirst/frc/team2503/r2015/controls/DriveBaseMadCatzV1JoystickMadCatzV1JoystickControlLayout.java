@@ -56,9 +56,9 @@ public class DriveBaseMadCatzV1JoystickMadCatzV1JoystickControlLayout implements
 		
 		{
 			if(left.get2Button()) {
-				values.put("masterLightsControllerStatus", MasterLightsControllerStatus.ALL_FAST_STROBE);
+				values.put("masterLightsControllerStatus", MasterLightsControllerStatus.ALL_SLOW_STROBE);
 			} else {
-				values.put("masterLightsControllerStatus", null);
+				values.put("masterLightsControllerStatus", MasterLightsControllerStatus.ALL_ON);
 			}
 		}
 
