@@ -9,15 +9,17 @@ import org.java_websocket.WebSocket.Role;
 
 public class SocketChannelIOHelper {
 
-	public static boolean read( final ByteBuffer buf, WebSocketImpl ws, ByteChannel channel ) throws IOException {
+	public static boolean read(final ByteBuffer buf, WebSocketImpl ws, ByteChannel channel) throws IOException {
 		buf.clear();
-		int read = channel.read( buf );
+
+		int read = channel.read(buf);
 		buf.flip();
 
-		if( read == -1 ) {
+		if(read == -1) {
 			ws.eot();
 			return false;
 		}
+
 		return read != 0;
 	}
 
@@ -25,15 +27,16 @@ public class SocketChannelIOHelper {
 	 * @see WrappedByteChannel#readMore(ByteBuffer)
 	 * @return returns whether there is more data left which can be obtained via {@link #readMore(ByteBuffer, WebSocketImpl, WrappedByteChannel)}
 	 **/
-	public static boolean readMore( final ByteBuffer buf, WebSocketImpl ws, WrappedByteChannel channel ) throws IOException {
+	public static boolean readMore(final ByteBuffer buf, WebSocketImpl ws, WrappedByteChannel channel) throws IOException {
 		buf.clear();
-		int read = channel.readMore( buf );
+		int read = channel.readMore(buf);
 		buf.flip();
 
-		if( read == -1 ) {
+		if(read == -1) {
 			ws.eot();
 			return false;
 		}
+
 		return channel.isNeedRead();
 	}
 
@@ -53,6 +56,7 @@ public class SocketChannelIOHelper {
 		} else {
 			do {
 				sockchannel.write(buffer);
+
 				if(buffer.remaining() > 0) {
 					return false;
 				} else {
@@ -75,4 +79,5 @@ public class SocketChannelIOHelper {
 
 		return c != null ? !((WrappedByteChannel)sockchannel).isNeedWrite() : true;
 	}
+
 }
