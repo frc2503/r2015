@@ -25,8 +25,8 @@ public class DriveBaseLogitechF310GamepadControlLayout implements DriveBaseContr
 			boolean precision = gamepad.getLeftStickButton() && gamepad.getRightStickButton();
 			double multiplier = (precision ? 0.4 : 1.0) * Constants.powerMultiplier;
 	
-			double leftAxisValue = Maths.squareInput(gamepad.getLeftBackForwardAxisValue());
-			double rightAxisValue = Maths.squareInput(gamepad.getRightForwardBackAxisValue());
+			double leftAxisValue = Maths.signedSquareInput(gamepad.getLeftBackForwardAxisValue());
+			double rightAxisValue = Maths.signedSquareInput(gamepad.getRightForwardBackAxisValue());
 			
 			double leftValue = ((leftAxisValue * Math.abs(leftAxisValue)) + leftAxisValue) / 2.0;
 			double rightValue = ((rightAxisValue * Math.abs(rightAxisValue)) + rightAxisValue) / 2.0;
